@@ -5,25 +5,10 @@ A exposição está dividida em duas seções principais. A primeira seção abo
 
 \section{Desempenho dos Modelos de Regressão}
 
-Conforme a metodologia, três algoritmos de regressão foram treinados e avaliados utilizando o conjunto de dados de 1.174 sentenças extraídas manualmente. O desempenho de cada modelo foi mensurado pelas métricas de Erro Quadrático Médio Raiz (RMSE) e Erro Absoluto Médio (MAE). Os resultados consolidados estão apresentados na Tabela \ref{table:resultados_modelos}.
+Conforme a metodologia, três algoritmos de regressão foram treinados e avaliados utilizando o conjunto de dados de 1.174 sentenças extraídas manualmente. O desempenho de cada modelo foi mensurado pelas métricas de Erro Quadrático Médio Raiz (RMSE) e Erro Absoluto Médio (MAE). Os resultados consolidados estão apresentados na Tabela \ref{tab:metricas}.
 
 % [TODO 2: Obter os resultados para isso e outros modelos pertinentes]
-\begin{table}[h]
-    \centering
-    \caption{Resultados de desempenho dos modelos testados.}
-    \label{table:resultados_modelos}
-    \begin{tabular}{lcc}
-        \hline
-        \textbf{Modelo} & \textbf{RMSE (R\$)} & \textbf{MAE (R\$)} \\
-        \hline
-        \textit{Decision Tree Regressor} & 2260.57 & 1577.21 \\
-        \textit{Random Forest Regressor} & 2262.12 & 1586.24 \\
-        \textit{AdaBoost Regressor} & * & * \\
-        \hline
-    \end{tabular}
-    \fonte{Elaborado pelo autor}
-\end{table}
-\input{tables/8-metricas}
+\input{tables/metricas}
 
 A análise comparativa dos resultados indica um desempenho muito similar entre os modelos \textit{Decision Tree Regressor} e \textit{Random Forest Regressor}, com uma ligeira vantagem para o primeiro em ambas as métricas.
 O modelo \textit{AdaBoost Regressor}, por sua vez, foi descartado em uma fase inicial de testes, pois, embora apresentasse um desempenho de erro próximo ao dos outros modelos, seu consumo de memória era aproximadamente 300 vezes superior ao do \textit{Decision Tree}, tornando-o inviável dadas as restrições de recursos computacionais do projeto, \ref{sub:desempenho}.
@@ -46,7 +31,7 @@ Após a seleção do \textit{Decision Tree Regressor}, foi aplicado o \textit{fr
 
 A análise global permite compreender quais fatores, em média, possuem maior impacto nas predições do modelo em todo o conjunto de dados. O gráfico de barras apresentado em \ref{fig:global_feature_importance} ilustra a importância média de cada variável.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{images/global_feature_importance.png}
     \caption{Global Feature Importance}
@@ -63,7 +48,7 @@ O gráfico de enxame (bee-swarm plot) de \ref{fig:global_bee_swarm} complementa 
 
 % [TODO 2: Pesquisar mais como interpretar o gráfico SHAP]
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{images/BeeSwarm.png}
     \caption{Global Feature Importance}
@@ -90,8 +75,7 @@ A interpretação do gráfico se dá da seguinte forma:
 
 Essa análise local demonstra a capacidade da ferramenta de fornecer uma justificativa transparente e quantificada para cada estimativa, tornando o resultado do algoritmo compreensível para um usuário leigo e adicionando transparência até mesmo para as decisões judiciais.
 
-\label{fig:shap_example_case}
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{images/Waterfall.png}
     \caption{Shap Example}

@@ -4,10 +4,11 @@ O desenvolvimento deste trabalho seguiu uma abordagem quantitativa para o modelo
 
 O processo metodológico do Projeto Concil-IA foi estruturado em um \textit{pipeline} de múltiplas etapas:
 
-\begin{figure}{h}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{images/Concil-IA-Pipeline.png}
     \caption{Pipeline Concil-IA}
+    \fonte{Elaborado pelo Autor}
     \label{fig:concilia_pipeline}
 \end{figure}
 \begin{enumerate}
@@ -26,10 +27,11 @@ O processo metodológico do Projeto Concil-IA foi estruturado em um \textit{pipe
 \end{enumerate}
 
 Já este trabalho contempla apenas as etapas:
-\begin{figure}{h}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{images/Project-Pipeline.png}
     \caption{Pipeline desse projeto}
+    \fonte{Elaborado pelo Autor}
     \label{fig:project-pipeline}
 \end{figure}
 
@@ -44,36 +46,36 @@ As seções a seguir detalham cada um dos passos deste trabalho.
 
 A base de dados corresponde a 1.174 sentenças provenientes do Juizado Especial Cível lotado na UFSC que versam sobre falhas no serviço de transporte aéreo (Direito do Consumidor).
 Essas sentenças foram coletadas manualmente por outros membros do projeto Concil-IA, na frente A.
-Após o processo de anonimização, os membros da equipe pertencentes à frente B extraíram variáveis (ou fatores) e as estruturaram com base nas descrições encontradas no Quadro \ref{table:feature_desc}
+Após o processo de anonimização, os membros da equipe pertencentes à frente B extraíram variáveis (ou fatores) e as estruturaram com base nas descrições encontradas no Quadro \ref{tab:feature_desc}
 
-\input{tables/2-feature_description}
+\input{tables/feature_description}
 
 Os dados, anonimizados em conformidade com a Lei Geral de Proteção de Dados (LGPD), foram estruturados e extraídos para arquivos no formato CSV (\textit{comma-separated values}).
 O processo de anonimização garantiu que informações sensíveis, como nomes das partes, fossem removidas, atendendo às exigências éticas para pesquisa científica.	
-O Quadro \ref{table:features_distribution} mostra a distribuição de valores para cada feature encontrada na base de dados extraída.
+O Quadro \ref{tab:features_distribution} mostra a distribuição de valores para cada feature encontrada na base de dados extraída.
 
-\input{tables/4-features_distribution}
+\input{tables/features_distribution}
 
-No projeto Concil-IA em si, há um processo de extração automatizada de dados (\citeonline{pereira2025using}), em quantidade descrita no Quadro \ref{table:extraction_modes} que entretanto não pertine ao escopo deste trabalho, com o modelo de referência sendo o treinado exclusivamente com as sentenças extraídas manualmente.
+No projeto Concil-IA em si, há um processo de extração automatizada de dados (\citeonline{pereira2025using}), em quantidade descrita no Quadro \ref{tab:extraction_modes} que entretanto não pertine ao escopo deste trabalho, com o modelo de referência sendo o treinado exclusivamente com as sentenças extraídas manualmente.
 
-\input{tables/3-extraction_modes}
+\input{tables/extraction_modes}
 
 \subsection{Ferramentas Computacionais}
-A implementação das etapas de pré-processamento, modelagem e explicabilidade foi realizada utilizando a linguagem de programação Python (3.13), com um conjunto de bibliotecas especializadas, conforme detalhado no Quadro \ref{table:python_libs}
+A implementação das etapas de pré-processamento, modelagem e explicabilidade foi realizada utilizando a linguagem de programação Python (3.13), com um conjunto de bibliotecas especializadas, conforme detalhado no Quadro \ref{tab:python_libs}
 
-\input{tables/5-python_libs}
+\input{tables/python_libs}
 
-As versões, uso específico, detalhamento e bibliotecas adicionais encontram-se no Apêndice \ref{table:python_versions}
+As versões, uso específico, detalhamento e bibliotecas adicionais encontram-se no Apêndice \ref{tab:python_versions}
 
 \section{Pipeline de Desenvolvimento do Modelo}
 
 \subsection{Pré-processamento e Engenharia de Atributos}
 Como detalhado na seção \ref{ch:dataset}, a base de dados pela qual o modelo se guiará foi extraída de sentenças jurídicas (anonimizadas) de processo a companhias aéreas para tabelas de dados estruturados.
 
-Os \textit{features} de intervalo, tanto para extravio de bagagem quanto atraso de vôo, foram também discretizadas conforme os Quadros \ref{table:faixas-intervalo-de-extravio} e \ref{table:faixas-intervalo-de-atraso}
+Os \textit{features} de intervalo, tanto para extravio de bagagem quanto atraso de vôo, foram também discretizadas conforme os Quadros \ref{tab:faixas-intervalo-de-extravio} e \ref{tab:faixas-intervalo-de-atraso}
 
-\input{tables/6-faixas-intervalo-de-extravio}
-\input{tables/7-faixas-intervalo-de-atraso}
+\input{tables/faixas-intervalo-de-extravio}
+\input{tables/faixas-intervalo-de-atraso}
 
 Inicialmente, realizou-se uma simples simplificação dos dados estruturados.
 \textit{Features} categóricos foram convertidos em numéricos mediante substituição binária --- "Sim" ou "S" é substituído por '1', 'Não' ou "N" por '0', valores não identificados por '0' também ---, ao passo que atributos contínuos, como os intervalos temporais mencionados acima, foram discretizados em faixas baseadas na distribuição observada, usando o método dos quartis (\cite{pinheiro2009estatistica}).
@@ -95,7 +97,7 @@ Após isso, os atributos redundantes, como os \textit{features} binários "extra
 Por fim, Outliers (\cite{hawkins1980identification}) foram identificados pelo método dos quantis \cite{brownlee2020data} e tratados com remoção seletiva.
 Para mitigar desbalanceamentos, aplicou-se a técnica \textit{RandomOverSampler} (da biblioteca \textit{Python} \textit{imblearn}), com a estratégia "\textit{not-majority}" para uniformizar as categorias-alvo (14, decididas baseado na distribuição de valores alvo \ref{fig:value_distribution}).
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \includegraphics[width=0.5\linewidth]{images/dano-moral-distribuicao.png}
     \caption{Distribuição de Valores para o Dano moral}
