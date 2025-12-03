@@ -79,8 +79,7 @@ Os \textit{features} "extravio temporário de bagagem" (binário) e "intervalo d
 
 Após isso, os atributos redundantes, como os \textit{features} binários "extravio temporário de bagagem" e "atraso" foram removidos, bem como "cancelamento/alteração de destino". Isso deve-se a sua informação já ser contida em "intervalo de extravio de bagagem" e "intervalo de atraso", e contribui para simplificar o modelo final.
 
-% [? TODO: Checar a referência para o método dos quantis]
-Por fim, Outliers (\cite{hawkins1980identification}) foram identificados pelo método dos quantis \cite{brownlee2020data} e tratados com remoção seletiva.
+Por fim, Outliers (\cite{hawkins1980identification}) foram identificados pelo método dos quantis \cite{wilcox2012introduction} e tratados com remoção seletiva.
 Para mitigar desbalanceamentos, aplicou-se a técnica \textit{RandomOverSampler} (da biblioteca \textit{Python} \textit{imblearn}), com a estratégia "\textit{not-majority}" para uniformizar as categorias-alvo (14, decididas baseado na distribuição de valores alvo \ref{fig:value_distribution}).
 
 \begin{figure}[h]
@@ -109,6 +108,3 @@ Nesse contexto, com os 3 modelos possuindo desempenho similar, os fatores secund
 Para garantir a transparência das predições, foi implementado o \textit{framework} SHAP (\textit{SHapley Additive exPlanations} (\cite{lundberg2017unified})). Utilizando o método \textit{Explainer}, foram calculados os valores de Shapley para cada atributo de cada predição, quantificando a contribuição individual de cada fator para o resultado final.
 
 Esses valores foram então utilizados para gerar visualizações, como gráficos de cascata (\textit{waterfall plots}) para explicações locais e gráficos de barras para a importância global dos atributos, traduzindo os resultados do modelo em justificativas compreensíveis para o usuário final.
-
-
-% [TODO: Fortalecer a metodologia. Por exemplo, ao invés de apenas apresentar as métricas de RMSE e MAE, poderia adicionar uma subseção de "Análise Estatística dos Resultados", onde aplicaria testes para verificar se as features que o SHAP apontou como mais importantes possuem distribuições estatisticamente diferentes nos casos de acerto e erro do modelo, assim como faz o exemplo. Isso agregaria um grande valor analítico e de rigor ao seu trabalho]
