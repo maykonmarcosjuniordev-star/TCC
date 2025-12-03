@@ -22,30 +22,50 @@ O projeto Concil-IA se insere nesse contexto, utilizando a tecnologia para apoia
 \section{Inteligência Artificial e Aprendizado de Máquina}
 \label{ai_ml}
 
-A Inteligência Artificial (IA) é um vasto campo da ciência da computação dedicado à criação de sistemas capazes de realizar tarefas que normalmente exigiriam inteligência humana, como percepção visual, reconhecimento de fala, tomada de decisão e tradução de idiomas.
+A Inteligência Artificial (IA) é um vasto campo da ciência da computação dedicado à criação de sistemas capazes de realizar tarefas que, historicamente, exigiriam inteligência humana, como percepção visual, reconhecimento de fala, tomada de decisão e tradução de idiomas.
 
-% [TODO: Adicionar uma seção de IA]
+Contemporaneamente, \citeonline{russell1995modern}, definem a IA não apenas pela simulação do pensamento humano, mas pela construção de "agentes racionais": sistemas que percebem seu ambiente e agem de forma a maximizar suas chances de sucesso na realização de um objetivo.
+
+Já \citeonline{kaplan2019siri} oferecem uma definição operacional mais alinhada à ciência de dados moderna, descrevendo a IA como a capacidade de um sistema de "interpretar corretamente dados externos, aprender a partir desses dados e utilizar esse aprendizado para atingir objetivos específicos e tarefas através de adaptação flexível".
+
+
+É importante distinguir, no escopo deste trabalho, os dois grandes tipos de IA classificados pela literatura \cite{searle1980minds}:
+\begin{itemize}
+    \item \textbf{IA Forte (General AI):} Sistemas hipotéticos que possuiriam consciência e capacidade de raciocínio generalista equivalente ou superior à humana.
+    \item \textbf{IA Fraca (Narrow AI):} Sistemas projetados para resolver problemas específicos e bem delimitados, como reconhecimento de imagem, tradução automática ou, no caso deste estudo, a predição de valores monetários em disputas jurídicas.
+\end{itemize}
+
+O modelo que este estudo busca desenvolver enquadra-se na categoria de IA Fraca, utilizando métodos estatísticos para identificar padrões em decisões passadas sem, contudo, exercer julgamento moral ou subjetivo.
 
 \subsection{\textit{Machine Learning}}
 \label{sec:machine_learning}
+Dentre as subáreas da Inteligência Artificial, o Aprendizado de Máquina (\textit{Machine Learning}) destaca-se como a abordagem dominante para a construção de sistemas preditivos.
 
-\textit{Machine learning} é um conjunto de técnicas que utiliza métodos computacionais e matemáticos para permitir que máquinas possam aprender a partir de dados e criar modelos especializados em fazer previsões ou realizar tomadas de decisões com base em novas observações. \cite{zhou2021machine}
+Enquanto a IA simbólica tradicional dependia de regras explicitamente programadas (estruturas \textit{if-then} manuais), o \textit{Machine Learning} foca no desenvolvimento de algoritmos que permitem aos computadores aprenderem essas regras empiricamente.
 
-O Aprendizado de Máquina (\textit{Machine Learning}) é um subcampo fundamental da IA.
-Conforme definido por \citeonline{mitchell1997machine}, um programa de computador aprende a partir da experiência E com respeito a alguma classe de tarefas T e medida de desempenho D, se seu desempenho em tarefas em T, medido por D, melhora com a experiência E.
-Em outras palavras, em vez de ser explicitamente programado, o sistema "aprende" padrões diretamente dos dados. 
-Este trabalho utiliza a abordagem de aprendizado supervisionado, na qual o modelo é treinado com um conjunto de dados onde as "respostas corretas" (rótulos) são fornecidas.
+Com isso, máquinas tornaram-se capazes de aprender a partir de dados e criar modelos especializados em fazer previsões ou realizar tomadas de decisões com base em novas observações \cite{zhou2021machine}.
 
-A fim de tornar o modelo mais preciso, existem diferentes abordagens dentro do escopo do \textit{machine learning} que podem ser utilizadas, a depender do tipo de dado que será usado (texto, imagem, vídeo, áudio, dentre outros tipos de mídia), bem como a tarefa para a qual o modelo foi designado.
-Por exemplo, existem modelos especializados em realizar a classificação de determinada característica de um conjunto de dados, no caso de modelos de classificação, ou em calcular a um valor específico, no caso de modelos de regressão. \cite{zhou2021machine}
+Conforme definido formalmente por \citeonline{mitchell1997machine}, diz-se que um programa de computador aprende a partir da experiência $E$ com respeito a uma classe de tarefas $T$ e medida de desempenho $D$, se seu desempenho nas tarefas em $T$, medido por $D$, melhora com a experiência $E$.
 
-Usualmente, em modelos preditores, o processo da construção do modelo envolve a divisão do conjunto de dados a ser usado em treinamento e teste, onde ambos possuem um conjunto de preditores (ou \textit{features}) e as variáveis que se desejam prever (ou classes).
-Este primeiro conjunto de dados irá alimentar o modelo para poder encontrar padrões nos dados, ao passo que o conjunto de teste servirá para validar se o modelo foi capaz de generalizar para dados não vistos no treinamento. \cite{zhou2021machine}
+No contexto deste trabalho:
+\begin{itemize}
+    \item \textbf{Tarefa ($T$):} Prever o valor de acordos ou indenizações;
+    \item \textbf{Experiência ($E$):} O conjunto de dados históricos de processos anteriores;
+    \item \textbf{Desempenho ($D$):} A precisão da predição em relação ao valor real (medida por métricas de erro).
+    \cite{mitchell1997machine}
+\end{itemize}
 
-No entanto, existem alguns problemas com os quais essas abordagens precisam lidar, dois dos mais importantes são o viés e o \textit{overfitting}:
-o primeiro pode ocorrer quando as classes são muito desbalanceadas entre si, fazendo com que o modelo não seja capaz de encontrar padrões para diferenciar corretamente, o que pode implicar uma queda no desempenho.
-Já o \textit{overfitting} ocorre quando o modelo consegue aprender e prever com um bom desempenho, mas não é capaz de generalizar bem para novos dados. \cite{zhou2021machine}.
-A seguir, será apresentada a fundamentação teórica dos modelos de \textit{machine learning} utilizados neste trabalho.
+Existem diferentes paradigmas de aprendizado, sendo os principais: supervisionado, não-supervisionado e por reforço.
+
+Este trabalho utiliza a abordagem de \textbf{aprendizado supervisionado}, na qual o modelo é treinado com um conjunto de dados rotulado, ou seja, onde as "respostas corretas" (o valor final da conciliação) são fornecidas ao algoritmo durante o treinamento \cite{russell2021artificial}.
+
+Para garantir a robustez do modelo, o processo de construção envolve a divisão dos dados em conjuntos de treinamento e teste.
+O conjunto de treinamento permite ao modelo ajustar seus parâmetros internos para minimizar o erro nas predições, enquanto o conjunto de teste, composto por dados nunca vistos pelo modelo, avalia sua capacidade de generalização \cite{zhou2021machine}.
+
+Dois desafios comuns nessa etapa são o viés (\textit{bias}) e o \textit{overfitting}.
+O viés ocorre quando o modelo faz suposições simplistas demais, falhando em capturar padrões relevantes (subajuste).
+Já o \textit{overfitting} (sobreajuste) acontece quando o modelo "decora" o ruído dos dados de treinamento, apresentando desempenho excelente nos dados conhecidos, mas falhando drasticamente em novos casos \cite{zhou2021machine}.
+A escolha de algoritmos como Árvores de Decisão, detalhados a seguir, busca equilibrar essa relação entre viés e variância.
 
 \section{Modelagem Preditiva com Regressão}
 \label{regression}
