@@ -1,0 +1,57 @@
+\chapter{Fundamentação Teórica}
+\label{ch:teorica}
+
+Este capítulo apresenta os conceitos-chave que formam a base teórica deste trabalho. A abordagem parte do contexto jurídico dos meios de solução de conflitos (\ref{contexto_juridico}), avança para os fundamentos computacionais da Inteligência Artificial e do Aprendizado de Máquina (\ref{ai_ml}) e, por fim, detalha as técnicas de regressão (\ref{regression}) e explicabilidade (\ref{xai} utilizadas no desenvolvimento do modelo preditivo.
+
+\section{Meios Autocompositivos e Resolução de Disputas Online}
+\label{contexto_juridico}
+
+O sistema judiciário brasileiro, diante do crescente volume de processos, tem incentivado a adoção de métodos autocompositivos para a solução de litígios. Dentre eles, destaca-se a conciliação.
+
+\subsection{Conciliação no Contexto Brasileiro}
+A conciliação é um método no qual um terceiro, neutro e imparcial — o conciliador —, facilita o diálogo entre as partes para que elas possam construir, por si mesmas, uma solução para o conflito. O objetivo é alcançar um acordo que satisfaça os interesses de ambos os envolvidos, de forma mais célere e menos adversarial que o processo judicial tradicional. A promoção desses meios é uma política oficial do Conselho Nacional de Justiça (CNJ), formalizada pela Resolução nº 125 de 2010 \cite{cnj2010relatorio}, para evitar litígio
+
+% [? TODO: definir litígio].
+
+\subsection{Resolução de Disputas Online (ODR)}
+A Resolução de Disputas Online, ou ODR (do inglês, \textit{Online Dispute Resolution}), "consiste  na  utilização  da  tecnologia  da  informação  e  da  comunicação  no  processo  de  solução  de  conflitos,  seja  na  totalidade  do  procedimento  ou  somente  em  parte  deste.  Dentre  os  procedimentos  que  podem  adotar  o  modelo  da  ODRs,  estão  a  arbitragem,  a  mediação,  a  conciliação  ou  a  negociação,  que  o  fazem  por  intermédio  de  ferramentas  automatizadas  (total  ou  parcialmente)" \cite{lima2016online}. As plataformas de ODR transferem o processo de negociação para o ambiente digital, oferecendo ferramentas que podem ampliar o acesso à justiça e otimizar a comunicação entre as partes, independentemente de barreiras geográficas. O projeto Concil-IA se insere nesse contexto, utilizando a tecnologia para apoiar o processo de conciliação.
+
+\section{Inteligência Artificial e Aprendizado de Máquina}
+\label{ai_ml}
+
+A Inteligência Artificial (IA) é um vasto campo da ciência da computação dedicado à criação de sistemas capazes de realizar tarefas que normalmente exigiriam inteligência humana, como percepção visual, reconhecimento de fala, tomada de decisão e tradução de idiomas.
+
+% [TODO: Adicionar uma seção de IA]
+
+\subsection{\textit{Machine Learning}}
+\label{sec:machine_learning}
+
+\textit{Machine learning} é um conjunto de técnicas que utiliza métodos computacionais e matemáticos para permitir que máquinas possam aprender a partir de dados e criar modelos especializados em fazer previsões ou realizar tomadas de decisões com base em novas observações. \cite{zhou2021machine}
+
+O Aprendizado de Máquina (\textit{Machine Learning}) é um subcampo fundamental da IA.
+Conforme definido por \citeonline{mitchell1997machine}, um programa de computador aprende a partir da experiência E com respeito a alguma classe de tarefas T e medida de desempenho D, se seu desempenho em tarefas em T, medido por D, melhora com a experiência E. Em outras palavras, em vez de ser explicitamente programado, o sistema "aprende" padrões diretamente dos dados. Este trabalho utiliza a abordagem de aprendizado supervisionado, na qual o modelo é treinado com um conjunto de dados onde as "respostas corretas" (rótulos) são fornecidas.
+
+A fim de tornar o modelo mais preciso, existem diferentes abordagens dentro do escopo do \textit{machine learning} que podem ser utilizadas, a depender do tipo de dado que será usado (texto, imagem, vídeo, áudio, dentre outros tipos de mídia), bem como a tarefa para a qual o modelo foi designado. Por exemplo, existem modelos especializados em realizar a classificação de determinada característica de um conjunto de dados, no caso de modelos de classificação, ou em calcular a probabilidade de pertencer a essa característica, no caso de modelos de regressão. \cite{zhou2021machine}
+
+Usualmente, em modelos preditores, o processo da construção do modelo envolve a divisão do conjunto de dados a ser usado em treinamento e teste, onde ambos possuem um conjunto de preditores (ou \textit{features}) e as variáveis que se desejam prever (ou classes). Este primeiro conjunto de dados irá alimentar o modelo para poder encontrar padrões nos dados, ao passo que o conjunto de teste servirá para validar se o modelo foi capaz de generalizar para dados não vistos no treinamento. \cite{zhou2021machine}
+
+No entanto, existem alguns problemas com os quais essas abordagens precisam lidar, dois dos mais importantes são o viés e o \textit{overfitting}: o primeiro pode ocorrer quando as classes são muito desbalanceadas entre si, fazendo com que o modelo não seja capaz de encontrar padrões para diferenciar corretamente, o que pode implicar uma queda no desempenho. Já o \textit{overfitting} ocorre quando o modelo consegue aprender e prever com um bom desempenho, mas não é capaz de generalizar bem para novos dados. \cite{zhou2021machine}. A seguir, será apresentada a fundamentação teórica dos modelos de \textit{machine learning} utilizados neste trabalho.
+
+\section{Modelagem Preditiva com Regressão}
+\label{regression}
+
+A análise preditiva utiliza técnicas de aprendizado de máquina para fazer previsões sobre eventos futuros com base em dados históricos. No domínio jurídico, isso pode se traduzir na previsão de desfechos de casos ou, como neste estudo, na estimativa de valores de indenização.
+
+\subsection{Regressão}
+A regressão é uma tarefa de aprendizado supervisionado cujo objetivo é prever um valor de saída contínuo e numérico. Diferentemente da classificação, que prevê uma categoria (e.g., "procedente" ou "improcedente"), a regressão estima uma quantidade, como o valor monetário de uma indenização por dano moral.
+
+\subsection{Árvores de Decisão para Regressão}
+Uma Árvore de Decisão (\textit{Decision Tree}) é um algoritmo de aprendizado de máquina que constrói um modelo preditivo na forma de uma estrutura de árvore. Cada nó interno da árvore representa uma pergunta sobre um dos atributos do caso (e.g., "O atraso do voo foi maior que 4 horas?"), e cada nó folha representa uma predição de valor. Uma das principais vantagens deste algoritmo é sua alta interpretabilidade, pois o fluxo de decisões que leva a uma previsão pode ser facilmente visualizado e compreendido. O modelo desenvolvido neste trabalho, o \textit{DecisionTreeRegressor}, é uma implementação deste conceito para tarefas de regressão.
+
+\section{Inteligência Artificial Explicável (XAI)}
+\label{xai}
+
+A crescente utilização de modelos de IA em áreas críticas como o Direito levanta a questão da transparência. Muitos algoritmos complexos funcionam como uma "caixa-preta" (\textit{black box}), tornando difícil para um ser humano compreender como uma decisão específica foi alcançada. A Inteligência Artificial Explicável (XAI) é o campo de pesquisa que busca desenvolver técnicas para tornar os modelos de IA mais transparentes e interpretáveis.
+
+\subsection{SHapley Additive exPlanations (SHAP)}
+O \textit{SHAP} é um \textit{framework} unificado para a interpretação de modelos preditivos, baseado no conceito de valores de \textit{Shapley} da teoria dos jogos cooperativos \cite{salih2025perspective}. Ele quantifica a contribuição de cada fator (ou \textit{feature}) do caso para o resultado da predição. Para uma determinada previsão, o \textit{SHAP} calcula como cada informação (e.g., o tempo de atraso do voo, a ocorrência de extravio de bagagem) empurrou o valor final para cima ou para baixo em relação a um valor base (a média das predições). Isso permite gerar explicações tanto para casos individuais (explicações locais) quanto para o comportamento geral do modelo (explicações globais), sendo uma ferramenta poderosa para garantir a transparência e a confiabilidade das decisões algorítmicas.

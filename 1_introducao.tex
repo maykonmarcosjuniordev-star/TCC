@@ -1,0 +1,55 @@
+\chapter{Introdução}
+
+O Poder Judiciário brasileiro enfrenta um cenário de crescente litigiosidade, conforme aponta o relatório "Justiça em Números" do Conselho Nacional de Justiça  \cite{da2024relatorio}.
+Em resposta a este desafio, o CNJ tem promovido duas agendas estratégicas principais: a primeira, consolidada pela Resolução nº 125/2010, foca na promoção de meios autocompositivos de solução de conflitos, como a conciliação e a mediação \cite{cnj2010relatorio}
+% [? TODO 1: Descobrir se é assim que cita mesmo];
+a segunda, impulsionada por resoluções como a de nº 332/2020 \cite{cnj2020relatorio}, prioriza o uso de tecnologias e Inteligência Artificial (IA) para modernizar e otimizar os serviços judiciais, bem como a Resolução nº 615 de 2025, que estabelece diretrizes para o desenvolvimento, utilização e governança de soluções desenvolvidas com recursos de inteligência artificial no Poder Judiciário \cite{cnj2025relatorio}.
+
+Embora eficazes, as sessões de conciliação frequentemente encontram um obstáculo prático: a assimetria de expectativas entre as partes quanto ao valor da indenização por dano moral. Autores de processos, muitas vezes, possuem uma percepção superestimada do valor que lhes é devido, enquanto os réus tendem a oferecer quantias consideravelmente inferiores. Essa disparidade dificulta o consenso e, consequentemente, a celebração de acordos, prolongando o litígio.
+
+% [TODO: Mudar isso para formato problema-hipótese-objetivos]
+Neste contexto, o projeto de pesquisa Concil-IA \cite{sabo2025avancos}, uma iniciativa multidisciplinar da Universidade Federal de Santa Catarina (UFSC) em parceria com o Juizado Especial Cível (JEC) da instituição, surge como uma resposta que integra ambas as agendas do CNJ. O projeto visa desenvolver um sistema de Resolução de Disputas Online (ODR, do inglês \textit{Online Dispute Resolution}) baseado em IA, com o objetivo de auxiliar na conciliação de conflitos consumeristas, especificamente em ações contra companhias aéreas.
+
+O presente trabalho de conclusão de curso concentra-se no desenvolvimento de um modelo preditivo para estimar o valor da indenização por dano moral e na aplicação de técnicas de Inteligência Artificial Explicável (XAI) para conferir transparência aos seus resultados.
+A partir de uma base de dados de 1.174 sentenças judiciais, foram utilizadas ferramentas de Aprendizado de Máquina (\textit{Machine Learning}), como a biblioteca \textit{Scikit-learn}, para treinar modelos de regressão, e o método \textit{SHapley Additive exPlanations} (SHAP) para interpretar as predições geradas \cite{salih2025perspective}.
+
+Espera-se que o modelo resultante sirva como uma ferramenta de apoio para as partes e para os conciliadores, fornecendo uma estimativa fundamentada e transparente do valor de uma eventual condenação. Ressalta-se, contudo, que a solução é proposta como um instrumento de auxílio à tomada de decisão, e não como um substituto da análise e deliberação humana, respeitando-se o devido processo legal e a autonomia dos envolvidos.
+
+\label{ch:intro}
+\section{Objetivos}
+\subsection{Objetivo geral}
+\label{sub:objetivo_geral}
+Desenvolver e implementar um modelo de Inteligência Artificial Explicável capaz de prever o valor de danos morais decididos em julgamentos relacionados a direitos do consumidor em voos comerciais, contribuindo para a explicabilidade de decisões judiciais e modelos de IA, e permitindo disponibilizar essa funcionalidade ao público por meio de uma interface web.
+\subsection{Objetivos específicos}
+\label{sub:objetivos_spec}
+\begin{enumerate}[label=(\roman*)]
+    \item Desenvolver e treinar um modelo de IA utilizando dados estruturados obtidos de sentenças jurídicas para prever valores de danos morais.
+    \item Analisar diferentes algoritmos e abordagens para construção do modelo, avaliando métricas de desempenho e identificando razões para diferenças entre eles.
+    \item Integrar o modelo a uma plataforma web já existente, permitindo que usuários consultem previsões de valores de danos morais com base em dados fornecidos.
+    \item Compilar e documentar todo o processo, desde a obtenção e estruturação dos dados até a análise dos resultados e as etapas de integração ao site.
+    \item Analisar a variabilidade dos resultados usando diferentes estratégias de divisão e formatação dos dados;
+    \item Analisar a importância das \textit{features} do melhor modelo encontrado.
+\end{enumerate}
+
+
+De forma geral, esta metodologia concentra-se na aplicação de IA para auxiliar na predição de valores de danos morais em processos judiciais relacionados ao transporte aéreo, dentro do contexto de direitos do consumidor.
+As etapas incluem:
+\begin{enumerate}
+    \item Processamento de aproximadamente 1.174 sentenças cedidas pelo Juizado de Pequenas Causas da UFSC.
+    \item Criação de um \textit{dataset} estruturado com variáveis relevantes (e.g., extravio de bagagem, atraso).
+    \item Avaliação de técnicas de \textit{feature selection} 
+    \item Avaliação de técnicas de pré-processamento de dados
+    \item Avaliação de algoritmos disponíveis na biblioteca \textit{Scikit-learn}
+    \item Implementação de técnicas de explicabilidade utilizando o método \textit{SHAP}
+    \item Geração de relatórios que documentem o processo, os resultados e as limitações do modelo.
+\end{enumerate}
+
+\section{Organização do trabalho}
+Os próximos capítulos deste trabalho estão organizados da seguinte forma:
+o Capítulo 2 consiste na fundamentação teórica, onde serão abordados conceitos fundamentais para a compreensão do trabalho, tais como inteligência artificial, explicabilidade, aprendizado de máquina e os diferentes modelos regressores que serão utilizados.
+O Capítulo 3 aborda os trabalhos relacionados.
+O Capítulo 4 explica a metodologia empregada para melhorar e avaliar os resultados.
+O Capítulo 5 expõe e discute os resultados obtidos até então.
+Por fim, o Capítulo 6 apresenta as conclusões retiradas deste trabalho, como também apontar os próximos passos do projeto.
+
+Na elaboração dessa dissertação, modelos de linguagem como OpenAI Chat GPT, Gemini AI e Manus, foram utilizados para revisão e estruturação do texto.

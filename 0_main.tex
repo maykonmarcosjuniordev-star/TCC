@@ -1,0 +1,176 @@
+%dica: use a opção oneside se houver um limite (e.g., 20) de páginas
+\documentclass[embeddedlogo]{ufsc-thesis-rn46-2019}
+\usepackage[T1]{fontenc} % fontes
+\usepackage[utf8]{inputenc} % UTF-8
+\usepackage{lipsum} % Gerador de texto
+\usepackage{pdfpages} % Inclui PDF externo (ficha catalográfica)
+\usepackage{multirow}
+\usepackage{colortbl}
+\usepackage{pgfplots}
+\usepackage{tocbibind}
+\usepackage{subcaption}
+\usepackage{afterpage}
+\usepackage{listings}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Configurações da classe (dados do trabalho)                  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Preâmbulo
+\titulo{Uso de Modelos de Inteligência Artificial para Predição de Julgamentos}
+\autor{Maykon Marcos Junior}
+% Importante! Para documentos em inglês, não use today, digite a data em
+% pt_BR, como deve aparecer na folha de certificação.
+% [TODO 2: Trocar para a data de TCC 2]
+\data{08/12/2025}
+\instituicao{Universidade Federal de Santa Catarina}
+\centro{Centro Tecnológico}
+% \programa{Programa de Graduação em Ciência da Computação}
+% \tese % ou \dissertacao
+\local{Florianópolis} % Apenas cidade! Sem estado
+% template da BU usa doutor/mestre em minúsculo, Bacharel/Licenciado em Title case.
+\titulode{bacharel em Ciência da Computação}
+
+%%% Atenção! No caso de TCC, além de usar \tcc, outros comandos devem ser fornecidos:
+%%%
+\tcc
+\departamento{Departamento de Informática e Estatística}
+\curso{Ciência da Computação}
+\titulode{Bacharel em Ciência da Computação}
+% %% Para TCCs, orientadores e coorientadores podem ser externos, logo a
+% %% BU exige que sua afiliação seja explicitada. Por padrão, assume-se
+% %% UFSC. Você pode alterar a afiliação com os comandos abaixo:
+% \afiliacaoorientador{Universidade Federal de Santa Catarina}
+% \afiliacaocoorientador{Universidade Federal da Terra de Ninguém}
+
+% Orientador, coorientador, membros da banca e coordenador
+% As regras da BU agora exigem que Dr. apareça **depois** do nome
+% Dica: para gerar Profᵃ. use Prof\textsuperscript{a}.
+% Dica 2: para feminino use \orientadora e \coorientadora
+\coorientador{Prof\textsuperscript{a}. Isabela Cristina Sabo, Dra.}
+\orientador{Prof. Jônata Tyska Carvalho, Dr.}
+% \membrobanca{Prof\textsuperscript{a}. Isabela Cristina Sabo, Dra.}{Universidade Federal de Santa Catarina}
+\membrobanca{Prof. Elder Rizzon Santos, Dr.}{Universidade Federal de Santa Catarina}
+\membrobanca{Prof. Renato Fileto, Dr.}{Universidade Federal de Santa Catarina}
+% Dica: se feminino, \coordenador
+% \coordenador{Prof. ---, Dr.}
+
+\pgfplotsset{compat=1.18}
+\begin{document}
+
+\begin{figure}[h] % 'h' positions the figure here
+    \centering % Centers the figure
+    \includegraphics[width=0.2\textwidth]{images/UFSC.png} % Adjust width as needed
+   % \caption{} % Optional caption
+    \label{fig:ufsc} % Optional label for referencing
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Principais elementos pré-textuais                            %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Inicia parte pré-textual do documento capa, folha de rosto, folha de
+% aprovação, aprovação, resumo, lista de tabelas, lista de figuras, etc.
+%\pretextual
+\imprimircapa
+\imprimirfolhaderosto*
+% [TODO 2: Refazer ao final do projeto on https://ficha.bu.ufsc.br/]
+\protect\incluirfichacatalografica{docs/ficha.pdf}
+
+
+  % Aqui deve ser inserido um resumo de 150 a 500 palavras (limitação de tamanho dada pela BU).
+  % A linguagem deve ser português e a hifenização já foi alterada.
+  % O resumo em português deve preceder o resumo em inglês, mesmo que o trabalho seja escrito em inglês.
+  % A BU também diz que deve ser usada a voz ativa e o discurso deve ser na 3ª pessoa.
+  % A estrutura do resumo pode ser similar a estrutura usada em artigos: Contexto -- Problema -- Estado da arte -- Solução proposta  -- Resultados.
+\begin{resumo}[Resumo]
+O judiciário brasileiro enfrenta um crescente volume de litigiosidade, impulsionando a adoção de tecnologias de Inteligência Artificial (IA) para otimizar a resolução de conflitos.
+
+Neste contexto, o presente trabalho, derivado das atividades desenvolvidas no projeto Concil-IA, teve como objetivo central o desenvolvimento  de um modelo preditivo de regressão para estimar valores de indenização por danos morais em disputas consumeristas de transporte aéreo, com foco em sua explicabilidade.
+
+A metodologia envolveu o pré-processamento de uma base de dados com 1.174 sentenças judiciais, o treinamento e a avaliação de algoritmos de aprendizado de máquina, como o \textit{DecisionTreeRegressor}, e a aplicação da técnica de Inteligência Artificial Explicável (XAI) \textit{SHapley Additive exPlanations} (SHAP) para interpretar os resultados.
+
+Como resultado, foi desenvolvido um modelo funcional com um Erro Quadrático Médio Raiz (RMSE) de R\$ 2.260,57 e um Erro Absoluto Médio (MAE) de R\$ 1.577,21, capaz de gerar predições de valor e identificar os fatores de maior impacto em cada decisão.
+Conclui-se que a abordagem é tecnicamente viável e oferece um instrumento de auxílio para as partes em processos de conciliação, fornecendo estimativas transparentes e justificáveis que contribuem para a promoção da pacificação social e para o avanço dos sistemas de resolução de disputas online (ODR).
+  \vspace{\baselineskip} 
+  % Atenção! a BU exige separação através de ponto (.). Ela recomanda de 3 a 5 keywords
+  \textbf{Palavras-chave:} Inteligência Artificial. Aprendizado de Máquina. Regressão. Explicabilidade. Resolução de Disputas Online.
+\end{resumo}
+
+\begin{abstract}
+The Brazilian judiciary faces a increasing volume of litigation, driving the adoption of Artificial Intelligence (AI) technologies to optimize dispute resolution.
+
+In this context, this work, derived from the activities developed in the Concil-IA project, had as its central objective the development of a predictive regression model to estimate compensation amounts for moral damages in air transport consumer disputes, with a focus on their explainability.
+The methodology involved the preprocessing of a database with 1,174 court judgments, the training and evaluation of machine learning algorithms, such as \textit{DecisionTreeRegressor}, and the application of the Explainable Artificial Intelligence (XAI) technique \textit{SHapley Additive exPlanations} (SHAP) to interpret the output.
+As a result, a functional model was developed with a Root Mean Square Error (RMSE) of R\$ 2,260,57 and a Mean Absolute Error (MAE) of R\$ 1,577,21 Reais, capable of generating value predictions and identifying the factors with the greatest impact on each decision.
+
+The conclusion is that the approach is technically feasible and offers a tool to assist parties in conciliation proceedings, providing transparent and justifiable estimates that contribute to the promotion of social pacification and the advancement of online dispute resolution (ODR) systems.
+
+  \vspace{\baselineskip} 
+  \textbf{Keywords:} Artificial Intelligence. Machine Learning. Regression. Explainability. Online Dispute Resolution.
+\end{abstract}
+
+% Lista para ambiente algorithm
+% \listofalgorithms*
+
+% \begin{listadesimbolos}
+%   $\gets$   & Atribuição \\
+%   $\exists$   & Quantificação existencial \\
+%   $\rightarrow$   & Implicação \\
+%   $\wedge$   & E lógico \\
+%   $\vee$   & Ou lógico \\
+%   $\neg$   & Negação lógica \\
+%   $\mapsto$   & Mapeia para \\
+%   $\sqsubseteq$   & Subclasse (em ontologias) \\
+%   $\subseteq$   & Subconjunto: $\forall x\;.\; x \in A \rightarrow x \in B$ \\
+%   $\langle\ldots\rangle$ & Tupla \\
+%   $\forall$   & Quantificação universal \\
+%   mmmmm & Nenhum sentido, apenas estou aqui para demonstrar a largura máxima dessas colunas. Ao abrir o ambiente \texttt{listadesimbolos}, pode-se fornecer um argumento opcional indicando a largura da coluna da esquerda (o default é de 5em): \texttt{\textbackslash{}begin\{listadesimbolos\}[2cm] .... \textbackslash{}end\{listadesimbolos\}} \\
+% \end{listadesimbolos}
+
+
+\listoffigures*
+\listoftables*
+
+\tableofcontents*
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Corpo do texto                                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textual
+
+\input{1_introducao}
+\input{2_fundamentacao_teorica}
+\input{3_trabalhos_relacionados}
+\input{4_metodologia}
+\input{5_resultados}
+\input{6_conclusoes}
+\input{7_trabalhos_futuros}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Elementos pós-textuais                                       %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\postextual
+\bibliography{bibliografia}
+
+\apendices
+\input{8_apendice}
+
+% \chapter{Exemplo de Apêndice}
+% \label{ch:apendice}
+
+% Uso de \cite em apêndice/anexo como se fossem antes do \bibliography{}.  NBR
+% 14724 e NBR 6023, assim como os documentos da BU não especificam nada sobre
+% citações dentro de apêndices/anexos. No entanto, em email trocado com a BU, a
+% orientação foi de usar \cite{} normalmente e deixar que as referências sejam
+% listadas na única bibliografia do documento, mesmo que esta esteja antes dos
+% apêndices. A argumentação é que apêndices e anexos são numerados e fazem parte
+% do documento, logo suas referências devem ser listadas como referências do
+% documento. Além disso as normas não prevem segmentar as referências por
+% capítulos.
+% \cite{turing1937} \lipsum[1]
+
+
+\end{document}

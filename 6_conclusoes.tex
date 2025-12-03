@@ -1,0 +1,24 @@
+\chapter{Considerações Preliminares e Próximos Passos}
+Este trabalho de conclusão de curso se propôs a enfrentar o desafio de construir uma ferramenta de Inteligência Artificial Explicável para o domínio jurídico, com foco na crescente litigiosidade em casos de Direito do Consumidor.
+A pesquisa foi guiada pelo objetivo geral de desenvolver um modelo preditivo capaz de estimar valores de indenização por danos morais em disputas de transporte aéreo, garantindo que suas decisões fossem transparentes e compreensíveis.
+
+Para alcançar tal propósito, foi executado um fluxo de trabalho metodológico que partiu da utilização de uma base de dados estruturada, extraída de 1.174 sentenças judiciais.
+
+% [TODO: Trocar esses objetivos por coisas melhores]
+
+Em cumprimento ao \textbf{Objetivo Específico (i)}, foi desenvolvido e treinado um modelo de regressão, o \textit{DecisionTreeRegressor}, que se mostrou apto a prever os valores de dano moral com uma margem de erro considerada satisfatória para o contexto de auxílio à conciliação (RMSE de R\$ 2.260,57 e MAE de R\$ 1.577,21).
+
+A seleção deste modelo foi o resultado da análise comparativa de diferentes algoritmos, que avaliou não apenas o desempenho preditivo, mas também a eficiência computacional e a interpretabilidade inerente de cada abordagem, atendendo ao \textbf{Objetivo Específico (ii)}.
+A análise da importância das \textit{features}, realizada por meio do \textit{framework} SHAP, permitiu identificar os fatores de maior impacto nas decisões do modelo — como o tempo de atraso do voo e a falta de assistência da companhia aérea —, cumprindo o \textbf{Objetivo Específico (vi)}.
+Esta etapa foi crucial para validar que o "raciocínio" do modelo está alinhado à prática jurídica, reforçando a confiabilidade da ferramenta.
+
+O processo de desenvolvimento, desde a preparação dos dados até a análise final, foi integralmente documentado, conforme o \textbf{Objetivo Específico (iv)}.
+O modelo resultante, por ser funcional e explicável, está tecnicamente pronto para ser integrado a uma plataforma web, como a do projeto Concil-IA, o que viabiliza o cumprimento do \textbf{Objetivo Específico (iii)} e disponibiliza a funcionalidade ao público.
+
+Conclui-se, portanto, que o trabalho atingiu seu objetivo principal, entregando um modelo de Inteligência Artificial Explicável funcional. A ferramenta não apenas fornece estimativas de valor, mas o faz de forma transparente, permitindo que as partes em uma conciliação compreendam os fatores que influenciam uma possível decisão judicial, o que tem o potencial de alinhar expectativas e facilitar a celebração de acordos.
+
+\section{Limitações do Estudo}
+
+Apesar dos resultados positivos, o desenvolvimento do projeto encontrou duas limitações principais.
+A primeira foi a escassez de recursos computacionais, que impediu a realização de uma busca exaustiva pela combinação ótima de hiperparâmetros do modelo.
+A segunda, e mais impactante, foi o tamanho limitado da base de dados, que, embora suficiente para validar a abordagem, restringe a capacidade do modelo de generalizar para cenários menos frequentes e impede a aplicação de arquiteturas mais complexas e potencialmente mais precisas.

@@ -1,0 +1,109 @@
+\chapter{Resultados Preliminares e discussão}
+
+Este capítulo apresenta os resultados obtidos a partir da aplicação da metodologia descrita anteriormente.
+A exposição está dividida em duas seções principais. A primeira seção aborda o desempenho quantitativo dos modelos de regressão treinados, detalhando as métricas de avaliação e justificando a escolha do modelo final. A segunda seção dedica-se à análise qualitativa da explicabilidade do modelo selecionado, demonstrando como as técnicas de XAI permitem interpretar as predições geradas.
+
+\section{Desempenho dos Modelos de Regressão}
+
+Conforme a metodologia, três algoritmos de regressão foram treinados e avaliados utilizando o conjunto de dados de 1.174 sentenças extraídas manualmente. O desempenho de cada modelo foi mensurado pelas métricas de Erro Quadrático Médio Raiz (RMSE) e Erro Absoluto Médio (MAE). Os resultados consolidados estão apresentados na Tabela \ref{table:resultados_modelos}.
+
+% [TODO 2: Obter os resultados para isso e outros modelos pertinentes]
+\begin{table}[h]
+    \centering
+    \caption{Resultados de desempenho dos modelos testados.}
+    \label{table:resultados_modelos}
+    \begin{tabular}{lcc}
+        \hline
+        \textbf{Modelo} & \textbf{RMSE (R\$)} & \textbf{MAE (R\$)} \\
+        \hline
+        \textit{Decision Tree Regressor} & 2260.57 & 1577.21 \\
+        \textit{Random Forest Regressor} & 2262.12 & 1586.24 \\
+        \textit{AdaBoost Regressor} & * & * \\
+        \hline
+    \end{tabular}
+    \fonte{Elaborado pelo autor}
+\end{table}
+\input{tables/8-metricas}
+
+A análise comparativa dos resultados indica um desempenho muito similar entre os modelos \textit{Decision Tree Regressor} e \textit{Random Forest Regressor}, com uma ligeira vantagem para o primeiro em ambas as métricas.
+O modelo \textit{AdaBoost Regressor}, por sua vez, foi descartado em uma fase inicial de testes, pois, embora apresentasse um desempenho de erro próximo ao dos outros modelos, seu consumo de memória era aproximadamente 300 vezes superior ao do \textit{Decision Tree}, tornando-o inviável dadas as restrições de recursos computacionais do projeto, \ref{sub:desempenho}.
+
+% [TODO 2: Mostrar relatórios de performance para poder dizer que o peso dos modelos contou]
+Diante do exposto, o modelo \textbf{Decision Tree Regressor} foi selecionado para as etapas subsequentes de explicabilidade.
+
+A escolha foi pautada por três fatores principais:
+\begin{enumerate}
+    \item \textbf{Melhor Desempenho:} Apresentou os menores valores de RMSE e MAE comparado ao \textit{Random Forest Regressor}, ainda que por uma margem estreita.
+    \item \textbf{Eficiência Computacional:} Exigiu significativamente menos recursos de memória e processamento em comparação com os modelos de \textit{ensemble} (\textit{Random Forest} e \textit{AdaBoost}).
+    \item \textbf{Interpretabilidade Inerente:} Como um modelo de árvore única, sua estrutura de funcionamento pode ser visualizada diretamente, o que se alinha ao objetivo central do projeto de garantir a máxima transparência e interpretabilidade.
+\end{enumerate}
+
+\section{Análise da Explicabilidade do Modelo (XAI)}
+
+Após a seleção do \textit{Decision Tree Regressor}, foi aplicado o \textit{framework} SHAP para analisar como o modelo utiliza os fatores do caso para realizar suas predições. Esta análise foi conduzida em duas frentes: a importância global dos atributos e a explicação de um caso específico.
+
+\subsection{Importância Global dos Atributos}
+
+A análise global permite compreender quais fatores, em média, possuem maior impacto nas predições do modelo em todo o conjunto de dados. O gráfico de barras apresentado em \ref{fig:global_feature_importance} ilustra a importância média de cada variável.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/global_feature_importance.png}
+    \caption{Global Feature Importance}
+    \label{fig:global_feature_importance}
+    \fonte{Elaborado pelo Autor}
+\end{figure}
+
+Observa-se que o fator mais influente para a determinação do valor do dano moral é o \textbf{Intervalo de Atraso}, que representa o tempo de atraso do voo ou o seu cancelamento.
+Em segundo lugar, destaca-se o \textbf{Desamparo}, variável que indica se a companhia aérea prestou ou não a devida assistência material ao consumidor.
+Esses dois fatores são, de longe, os mais decisivos para o modelo.
+A alta frequência dessas variáveis na base de dados, conforme \ref{fig:value_distribution}, contribui para que o modelo aprenda com maior robustez sobre seus impactos.
+
+O gráfico de enxame (bee-swarm plot) de \ref{fig:global_bee_swarm} complementa essa análise, mostrando não apenas a importância, mas também a direção do impacto de cada fator. Nele, é possível visualizar que valores altos de "Intervalo de Atraso" e a presença de "Desamparo" (valores em vermelho) tendem a empurrar a predição para valores de indenização mais altos.
+
+% [TODO 2: Pesquisar mais como interpretar o gráfico SHAP]
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/BeeSwarm.png}
+    \caption{Global Feature Importance}
+    \label{fig:global_bee_swarm}
+    \fonte{Elaborado pelo Autor}
+\end{figure}
+
+\subsection{Análise de um Caso Específico (Explicação Local)}
+
+% [TODO 2: Refazer isso com um novo modelo]
+
+A principal vantagem do SHAP é sua capacidade de gerar explicações para predições individuais.
+\ref{fig:shap_example_case} apresenta um gráfico de cascata (\textit{waterfall plot}) que detalha como o modelo chegou à predição de R\$ 9.290,44 para um caso específico da base de dados.
+
+A interpretação do gráfico se dá da seguinte forma:
+\begin{itemize}
+    \item O ponto de partida é o valor base (\textit{E[f(x)] = 7.934.49}), que representa a média de todas as predições do modelo.
+    \item Cada fator do caso em análise adiciona (em vermelho) ou subtrai (em azul) um valor a essa base.
+    \item No exemplo, o fato de o \textbf{Intervalo de Atraso} ter sido de 15 a 24 horas contribuiu com um acréscimo de R\$ 929,59 ao valor da indenização.
+    \item O \textbf{Desamparo} por parte da companhia aérea adicionou mais R\$ 391,15.
+    \item Os demais fatores, por não estarem presentes neste caso específico, tiveram impacto nulo.
+    \item A soma de todas essas contribuições resulta no valor final predito pelo modelo (\textit{f(x)} = R\$ 9.290,44).
+\end{itemize}
+
+Essa análise local demonstra a capacidade da ferramenta de fornecer uma justificativa transparente e quantificada para cada estimativa, tornando o resultado do algoritmo compreensível para um usuário leigo e adicionando transparência até mesmo para as decisões judiciais.
+
+\label{fig:shap_example_case}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/Waterfall.png}
+    \caption{Shap Example}
+    \label{fig:shap_example_case}
+    \fonte{Elaborado pelo Autor}
+\end{figure}
+
+\section{Discussão dos Resultados Preliminares}
+
+Os resultados quantitativos demonstram que foi possível desenvolver um modelo de regressão com uma margem de erro absoluta média de R\$ 1.577,21. Embora exista uma margem de erro inerente, o valor é considerado satisfatório para o propósito de uma ferramenta de auxílio à conciliação, onde se busca uma estimativa razoável, e não um valor exato.
+
+Mais importante que a precisão numérica, contudo, é a capacidade do modelo de justificar suas predições de forma alinhada à intuição jurídica.
+A análise de explicabilidade revelou que os fatores de maior impacto no modelo (atraso/cancelamento e falta de assistência) são, de fato, os elementos centrais na fundamentação das sentenças judiciais reais para casos de transporte aéreo.
+Isso confere validade e confiabilidade ao modelo, não apenas como uma "caixa-preta" preditiva, mas como um sistema cujo raciocínio é transparente e auditável.
+A combinação do desempenho preditivo com a interpretabilidade via SHAP resulta em uma ferramenta com potencial para auxiliar as partes em uma negociação, fornecendo estimativas seguras e transparentes de uma eventual indenização por dano moral.

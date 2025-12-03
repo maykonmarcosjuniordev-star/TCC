@@ -1,0 +1,126 @@
+\chapter{Metodologia}
+\label{ch:metodologia}
+O desenvolvimento deste trabalho seguiu uma abordagem quantitativa para o modelo e qualitativa para a explicabilidade; com a aplicação de técnicas de Ciência de Dados e Aprendizado de Máquina para a construção de um modelo preditivo de regressão e técnicas de Inteligência Artificial Explicável para permitir a explicação e interpretação de dados por usuários leigos.
+
+O processo metodológico do Projeto Concil-IA foi estruturado em um \textit{pipeline} de múltiplas etapas:
+
+\begin{figure}{h}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/Concil-IA-Pipeline.png}
+    \caption{Pipeline Concil-IA}
+    \label{fig:concilia_pipeline}
+\end{figure}
+\begin{enumerate}
+    \item Coleta de dados
+    \item Anonimização
+    \item Seleção de \textit{Features}
+    \item Estruturação
+    \item Pré-processamento de Dados
+    \item Engenharia de \textit{Features}
+    \item Divisão do Conjunto de Dados
+    \item Treinamento de Modelos de Regressão
+    \item Avaliação do Desempenho
+    \item Seleção de Modelo e Hiperparâmetros
+    \item Aplicação de Técnicas de Explicabilidade
+    \item Disponibilização do Modelo em uma Interface Web
+\end{enumerate}
+
+Já este trabalho contempla apenas as etapas:
+\begin{figure}{h}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/Project-Pipeline.png}
+    \caption{Pipeline desse projeto}
+    \label{fig:project-pipeline}
+\end{figure}
+
+As seções a seguir detalham cada um dos passos deste trabalho.
+
+% [TODO: Fazer uma pequena introdução de cada etapa]
+
+\section{Base de Dados e Ferramentas Computacionais}
+
+\subsection{Base de Dados}
+\label{ch:dataset}
+
+A base de dados corresponde a 1.174 sentenças provenientes do Juizado Especial Cível lotado na UFSC que versam sobre falhas no serviço de transporte aéreo (Direito do Consumidor).
+Essas sentenças foram coletadas manualmente por outros membros do projeto Concil-IA, na frente A.
+Após o processo de anonimização, os membros da equipe pertencentes à frente B extraíram variáveis (ou fatores) e as estruturaram com base nas descrições encontradas no Quadro \ref{table:feature_desc}
+
+\input{tables/2-feature_description}
+
+Os dados, anonimizados em conformidade com a Lei Geral de Proteção de Dados (LGPD), foram estruturados e extraídos para arquivos no formato CSV (\textit{comma-separated values}).
+O processo de anonimização garantiu que informações sensíveis, como nomes das partes, fossem removidas, atendendo às exigências éticas para pesquisa científica.	
+O Quadro \ref{table:features_distribution} mostra a distribuição de valores para cada feature encontrada na base de dados extraída.
+
+\input{tables/4-features_distribution}
+
+No projeto Concil-IA em si, há um processo de extração automatizada de dados (\citeonline{pereira2025using}), em quantidade descrita no Quadro \ref{table:extraction_modes} que entretanto não pertine ao escopo deste trabalho, com o modelo de referência sendo o treinado exclusivamente com as sentenças extraídas manualmente.
+
+\input{tables/3-extraction_modes}
+
+\subsection{Ferramentas Computacionais}
+A implementação das etapas de pré-processamento, modelagem e explicabilidade foi realizada utilizando a linguagem de programação Python (3.13), com um conjunto de bibliotecas especializadas, conforme detalhado no Quadro \ref{table:python_libs}
+
+\input{tables/5-python_libs}
+
+As versões, uso específico, detalhamento e bibliotecas adicionais encontram-se no Apêndice \ref{table:python_versions}
+
+\section{Pipeline de Desenvolvimento do Modelo}
+
+\subsection{Pré-processamento e Engenharia de Atributos}
+Como detalhado na seção \ref{ch:dataset}, a base de dados pela qual o modelo se guiará foi extraída de sentenças jurídicas (anonimizadas) de processo a companhias aéreas para tabelas de dados estruturados.
+
+Os \textit{features} de intervalo, tanto para extravio de bagagem quanto atraso de vôo, foram também discretizadas conforme os Quadros \ref{table:faixas-intervalo-de-extravio} e \ref{table:faixas-intervalo-de-atraso}
+
+\input{tables/6-faixas-intervalo-de-extravio}
+\input{tables/7-faixas-intervalo-de-atraso}
+
+Inicialmente, realizou-se uma simples simplificação dos dados estruturados.
+\textit{Features} categóricos foram convertidos em numéricos mediante substituição binária --- "Sim" ou "S" é substituído por '1', 'Não' ou "N" por '0', valores não identificados por '0' também ---, ao passo que atributos contínuos, como os intervalos temporais mencionados acima, foram discretizados em faixas baseadas na distribuição observada, usando o método dos quartis (\cite{pinheiro2009estatistica}).
+
+% [TODO 2: Feature Selection virá aqui]
+\cite{kuhn2013applied}
+
+Depois, colunas com \textit{confactors} (que anulam o dano moral) foram também removidas, junto aos casos improcedentes.
+--- Essa decisão foi tomada por observar-se que valores nulos prejudicam a acurácia e confundem o modelo ---
+Portanto, os \textit{features} "culpa exclusiva do consumidor" e "condições climáticas/fechamento do aeroporto" são verificadas na interface do \textit{website} e não no modelo. --- Ou seja, antes do usuário poder inserir os fatores específicos do seu caso, ele é questionado sobre as condições climáticas do momento de seu vôo e se os problemas não decorrem de suas ações. Caso responda sim, é informado diretamente que a indenização por dano moral provavelmente será nula e desencorajado de usar o modelo.
+
+O \textit{feature} "assistência da companhia aérea" (se a companhia aérea prestou ajuda efetiva para mitigar transtornos ao consumidor), que também seria um \textit{factor} negativo para o valor de indenização (embora não o anule) originalmente, e por isso teve sua interpretação e valores invertidos. Ele tornou-se o \textit{feature} "desamparo", presente apenas quando a companhia aérea falha em prestar auxílio efetivo ao consumidor. Dessa forma, todos os \textit{features} selecionados contribuem para o aumento do valor estimado.
+
+Os \textit{features} "extravio temporário de bagagem" (binário) e "intervalo de extravio de bagagem" foram combinados (se não houve extravio de bagagem, o intervalo é 0). Da mesma forma, "atraso" e "intervalo de atraso" foram combinados, e depois o \textit{feature} "cancelamento/alteração de destino" também foi combinada em "intervalo de atraso", tornando-se a faixa '-1', para representar infinito (pois o consumidor nunca chegou ao destino contratado).
+
+Após isso, os atributos redundantes, como os \textit{features} binários "extravio temporário de bagagem" e "atraso" foram removidos, bem como "cancelamento/alteração de destino". Isso deve-se a sua informação já ser contida em "intervalo de extravio de bagagem" e "intervalo de atraso", e contribui para simplificar o modelo final.
+
+% [? TODO: Checar a referência para o método dos quantis]
+Por fim, Outliers (\cite{hawkins1980identification}) foram identificados pelo método dos quantis \cite{brownlee2020data} e tratados com remoção seletiva.
+Para mitigar desbalanceamentos, aplicou-se a técnica \textit{RandomOverSampler} (da biblioteca \textit{Python} \textit{imblearn}), com a estratégia "\textit{not-majority}" para uniformizar as categorias-alvo (14, decididas baseado na distribuição de valores alvo \ref{fig:value_distribution}).
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{images/dano-moral-distribuicao.png}
+    \caption{Distribuição de Valores para o Dano moral}
+    \label{fig:value_distribution}
+    \fonte{Elaborado pelo Autor}
+\end{figure}
+
+\subsection{Treinamento e Seleção do Modelo}
+O conjunto de dados foi dividido em 80\% para treinamento e 20\% para teste, utilizando uma estratégia de amostragem estratificada para garantir que a distribuição das classes de valor fosse preservada em ambas as amostras. 
+
+% [TODO 2: Depois de mudar a metodologia para incluir um conjunto de validação, citar o Machine Yearning]
+Foram treinados e avaliados três algoritmos de regressão da biblioteca \textit{scikit-learn}: \textit{DecisionTreeRegressor} (\cite{blockeel2023decision}), \textit{RandomForestRegressor} (\cite{zhang2023compare}) e \textit{AdaBoostRegressor} (\cite{airlangga2024anomaly})
+
+A otimização dos hiperparâmetros de cada modelo foi realizada por meio de uma abordagem heurística, com a variação de um hiperparâmetro por vez, devido às limitações de recursos computacionais disponíveis.
+
+\subsection{Avaliação de Desempenho}
+\label{sub:desempenho}
+O desempenho dos modelos foi avaliado quantitativamente por meio de duas métricas principais: o Erro Quadrático Médio Raiz (RMSE), escolhido por sua capacidade de penalizar erros maiores de forma mais significativa, e o Erro Absoluto Médio (MAE), utilizado para fornecer uma estimativa da margem de erro média em termos práticos, (\cite{zhang2023compare}).
+Além do desempenho preditivo, a seleção do modelo final considerou fatores secundários, como o custo computacional (memória e tempo de processamento) e a interpretabilidade inerente de cada algoritmo, sendo este último um critério fundamental para os objetivos do projeto.
+Nesse contexto, com os 3 modelos possuindo desempenho similar, os fatores secundários foram determinantes na escolha final.
+
+\subsection{Implementação da Explicabilidade (XAI)}
+Para garantir a transparência das predições, foi implementado o \textit{framework} SHAP (\textit{SHapley Additive exPlanations} (\cite{lundberg2017unified})). Utilizando o método \textit{Explainer}, foram calculados os valores de Shapley para cada atributo de cada predição, quantificando a contribuição individual de cada fator para o resultado final.
+
+Esses valores foram então utilizados para gerar visualizações, como gráficos de cascata (\textit{waterfall plots}) para explicações locais e gráficos de barras para a importância global dos atributos, traduzindo os resultados do modelo em justificativas compreensíveis para o usuário final.
+
+
+% [TODO: Fortalecer a metodologia. Por exemplo, ao invés de apenas apresentar as métricas de RMSE e MAE, poderia adicionar uma subseção de "Análise Estatística dos Resultados", onde aplicaria testes para verificar se as features que o SHAP apontou como mais importantes possuem distribuições estatisticamente diferentes nos casos de acerto e erro do modelo, assim como faz o exemplo. Isso agregaria um grande valor analítico e de rigor ao seu trabalho]

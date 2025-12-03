@@ -1,0 +1,31 @@
+\chapter{Trabalhos relacionados}
+\label{ch:trabalhos_relacionados}
+
+A aplicação de Inteligência Artificial no domínio jurídico, embora promissora, não é um campo inexplorado. Diversos pesquisadores, tanto no cenário nacional quanto internacional, têm se dedicado a desenvolver modelos preditivos para uma variedade de tarefas. Esta seção posiciona o presente trabalho em relação à literatura existente, destacando as sinergias e, sobretudo, as lacunas que esta pesquisa busca preencher, com foco na predição de valores de indenização por meio de regressão e na aplicação de técnicas de explicabilidade.
+
+\section{Análise Preditiva de Decisões Judiciais}
+
+A predição de resultados judiciais é uma das áreas mais investigadas na interseção entre IA e Direito. Um dos trabalhos pioneiros nessa frente, conduzido por \citeonline{aletras2016predicting}, utilizou técnicas de Processamento de Linguagem Natural (PLN) e modelos de \textit{Support Vector Machine} (SVM) para prever as decisões do Tribunal Europeu dos Direitos Humanos, alcançando uma acurácia de 79\% e demonstrando a viabilidade de usar o conteúdo textual das petições para antever seus desfechos.
+
+No contexto brasileiro, a pesquisa de \citeonline{liu2017predictive} comparou o desempenho de diferentes classificadores, como Redes Neurais e Árvores de Regressão, para prever o resultado de casos de homicídio e corrupção, concluindo que a escolha do algoritmo ideal depende fortemente do subconjunto de dados analisado. Na mesma linha, \citeonline{magalhaes2022tecnicas} exploraram diversas técnicas de aprendizado de máquina para a tarefa de classificação de decisões judiciais, consolidando a validade desses métodos para a análise de dados jurídicos no Brasil. Esses trabalhos, embora fundamentais, concentram-se na tarefa de \textit{classificação} (prever um resultado categórico), enquanto a presente pesquisa se dedica à \textit{regressão} (prever um valor contínuo).
+
+\section{Regressão Aplicada à Predição de Indenizações}
+
+A predição de valores monetários em sentenças judiciais, uma tarefa de regressão, é mais específica e menos explorada. A pesquisa que mais se aproxima deste projeto foi desenvolvida por \citeonline{hsieh2021legal}, que testaram e compararam múltiplos algoritmos de regressão para prever o valor de indenização por "sofrimento mental" em casos de acidentes de carro fatais em Taiwan. Os autores concluíram que o modelo \textit{Random Forest} apresentou o melhor desempenho. Embora tenham realizado uma análise de importância das \textit{features}, uma técnica mais simples de explicabilidade, eles não aplicaram métodos de XAI avançados como o \textit{SHAP}.
+
+No âmbito do próprio projeto Concil-IA, do qual este trabalho faz parte, pesquisas anteriores pavimentaram o caminho para a modelagem aqui proposta. O trabalho de \citeonline{sabo2022clustering} utilizou técnicas de clusterização para explorar a mesma base de sentenças sobre falhas no transporte aéreo, sendo fundamental para a identificação inicial dos fatores de maior relevância. Posteriormente, \citeonline{dal2023regression} desenvolveram um dos primeiros modelos de regressão para prever o dano moral nesse mesmo contexto, validando a abordagem e estabelecendo uma base de comparação de desempenho.
+
+Mais recentemente, a frente de extração de fatores do projeto, documentada em \citeonline{pereira2025using}, explorou o uso de Grandes Modelos de Linguagem (\textit{LLMs}), como o \textit{GPT-4o}, para automatizar a extração de variáveis das sentenças judiciais, processo que gerou dados complementares aos utilizados para treinar o modelo aqui apresentado (embora estes não pertençam ao escopo abordado).
+
+\section{A Lacuna da Explicabilidade e a Contribuição Deste Trabalho}
+
+Apesar dos avanços na predição, a questão da transparência permanece um desafio central. A preocupação com o efeito "caixa-preta" dos modelos de IA no Direito é amplamente discutida na literatura. Embora trabalhos como o de \citeonline{hsieh2021legal} tenham abordado a importância dos fatores, a aplicação de métodos robustos de XAI, como o \textit{SHAP}, ainda é incipiente na área, especialmente em modelos de regressão para o Direito do Consumidor brasileiro.
+
+Diante do exposto, a principal contribuição deste trabalho é preencher essa lacuna, ao integrar sistematicamente três áreas:
+\begin{enumerate}
+    \item \textbf{A modelagem de regressão} para predição de valores de dano moral, aprofundando os resultados obtidos por \citeonline{dal2023regression};
+    \item \textbf{O contexto específico do Direito do Consumidor} brasileiro, utilizando uma base de dados real e validada;
+    \item \textbf{A aplicação de uma técnica de XAI avançada (\textit{SHAP})} para fornecer explicações locais e globais para as predições do modelo, tornando-o transparente e auditável para o usuário final.
+\end{enumerate}
+
+Dessa forma, esta pesquisa não apenas desenvolve um modelo preditivo, mas o apresenta como uma ferramenta explicável, alinhada às diretrizes éticas para o uso de IA no Judiciário, e com potencial de aplicação em plataformas de Resolução de Disputas Online (ODR) para auxiliar no processo de conciliação.
