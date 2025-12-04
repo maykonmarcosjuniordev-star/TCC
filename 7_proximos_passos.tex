@@ -1,0 +1,42 @@
+\section{Próximos Passos}
+\label{sec:proximos_passos}
+
+Considerando que a integração preliminar do modelo à interface web já foi realizada e que uma versão base de todos os objetivos já foi atingida, a próxima fase concentrar-se-á no aprimoramento técnico, estatístico e metodológico do "motor" de inteligência artificial.
+O objetivo é garantir que o modelo final não seja apenas funcional, mas robusto, reprodutível e estatisticamente validado.
+
+As atividades planejadas dividem-se em quatro eixos principais:
+
+\subsection{Engenharia de Software e Reprodutibilidade}
+Para viabilizar a experimentação em larga escala necessária no TCC II, a infraestrutura do projeto será profissionalizada:
+\begin{itemize}
+    \item \textbf{Automação de Experimentos:} Reestruturação do repositório para permitir a execução parametrizada de múltiplos testes simultâneos, facilitando a comparação sistemática entre diferentes configurações.
+    \item \textbf{Rastreabilidade:} Desenvolvimento de um gerador automático de \textit{logs} e relatórios de performance (computacional e preditiva) para cada rodada de treinamento.
+    \item \textbf{Documentação Técnica:} Criação de uma \textit{Wiki} detalhada do repositório, documentando o fluxo de dados e as decisões de implementação para garantir a reprodutibilidade científica.
+\end{itemize}
+
+\subsection{Refinamento de Dados e Pré-processamento}
+A qualidade dos dados de entrada será refinada para lidar com a complexidade temporal e contextual dos processos:
+\begin{itemize}
+    \item \textbf{Correção Monetária:} Implementação de correção monetária dos valores de indenização para uma data base (e.g., 2025) utilizando índices oficiais como o IPCA, mitigando distorções causadas pela inflação em sentenças antigas.
+    \item \textbf{Tratamento de Contextos Excepcionais:} Criação de \textit{features} específicas para sinalizar períodos anômalos (como a pandemia de COVID-19) ou perfis de julgamento específicos, visando isolar vieses temporais ou de varas judiciais.
+    \item \textbf{Gestão de \textit{Outliers}:} Estudo aprofundado sobre a remoção ou segregação de \textit{outliers}. Planeja-se analisar os casos removidos separadamente e, potencialmente, criar modelos específicos para tratar esses casos extremos, evitando que distorçam o aprendizado do padrão geral.
+    \item \textbf{Seleção de Atributos:} Aplicação de bibliotecas de \textit{Feature Selection} e \textit{Elimination} para reduzir a dimensionalidade e o ruído dos dados.
+\end{itemize}
+
+\subsection{Estratégias de Modelagem}
+Será abandonada a abordagem puramente heurística em favor de uma busca sistemática pelo melhor algoritmo:
+\begin{itemize}
+    \item \textbf{Diversificação de Algoritmos:} Testes comparativos com uma gama mais ampla de modelos, incluindo Regressão Linear, \textit{Support Vector Machines} (SVM), \textit{Naive Bayes}, Redes Bayesianas, \textit{XGBoost} e Redes Neurais.
+    \item \textbf{Modelos Particionados:} Investigação de arquiteturas de "divisão e conquista", onde modelos distintos são treinados para tipos específicos de lide (ex: um modelo para atraso/cancelamento e um modelo simplificado de médias para casos de menor complexidade intersecção entre variáveis) e também realizar um segundo treinamento combinando as partes em um modelo abrangente.
+    \item \textbf{Otimização de Hiperparâmetros:} Execução de \textit{Grid Search} para cada um dos algoritmos testados, visando encontrar a configuração ótima de cada modelo.
+    \item \textbf{Ponderação de Classes:} Testes com técnicas de \textit{Weight Classification} (pesos para instâncias ou penalização de erros) como alternativa às técnicas tradicionais de balanceamento de dados.
+\end{itemize}
+
+\subsection{Protocolos de Avaliação e Validação Estatística}
+Por fim, o rigor na avaliação será intensificado para evitar vieses estatísticos:
+\begin{itemize}
+    \item \textbf{Divisão Estratificada de Dados:} Adoção de uma partição rígida de dados em Treino (60\%), Validação/Dev (20\%) e Teste (20\%). O conjunto de teste será isolado ("coce" ou \textit{holdout}) e utilizado apenas para a avaliação final, garantindo que não haja ajuste de hiperparâmetros sobre ele.
+    \item \textbf{Métricas de Avaliação Personalizadas:} Estudo de métricas alternativas ao erro médio padrão, como variações do MAPE baseadas no valor predito ao invés do correto (o que permitiria melhor informar ao usuário a margem de erro do modelo).
+    \item \textbf{Curvas de Aprendizado:} Plotagem de curvas de aprendizado para diagnosticar problemas de \textit{overfitting} ou \textit{underfitting}.
+    \item \textbf{Validação Estatística do SHAP:} Implementação de testes estatísticos para verificar se as \textit{features} apontadas como importantes pelo SHAP possuem distribuições significativamente diferentes entre os casos de acerto e erro do modelo, validando a explicabilidade matemática frente à realidade dos dados. Além disso, mais pesquisa sobre o funcionamento do SHAP é necessária para interpretá-lo para o usuário leigo.
+\end{itemize}

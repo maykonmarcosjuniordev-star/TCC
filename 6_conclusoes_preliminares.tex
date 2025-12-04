@@ -1,0 +1,32 @@
+\chapter{Considerações Preliminares}
+\label{ch:conclusao}
+
+Este trabalho apresentou o desenvolvimento e a validação preliminar de uma ferramenta de Inteligência Artificial Explicável voltada ao domínio jurídico, especificamente para o projeto Concil-IA.
+O estudo foi motivado pela necessidade de reduzir a assimetria de informações em audiências de conciliação envolvendo transporte aéreo, propondo o uso de aprendizado de máquina para fornecer estimativas objetivas e transparentes de dano moral.
+
+Os experimentos realizados até o momento permitem corroborar a hipótese central da pesquisa: é viável utilizar modelos de regressão treinados em sentenças passadas para antecipar desfechos judiciais com margem de erro controlada, desde que aliados a técnicas de explicabilidade que garantam a transparência do processo decisório.
+
+\section{Síntese dos Resultados Parciais}
+
+Embora os resultados parciais insuficientes para adoção em larga escala, cada objetivo estabelecido (\ref{sub:objetivos_spec}) produziu ao menos uma prova de conceito capaz de fomentar futuras evoluções.
+
+As etapas de treinamento (\textit{i} e \textit{ii}) resultaram na escolha do \textit{DecisionTreeRegressor} como a abordagem mais equilibrada.
+
+Embora modelos mais complexos (dentre os testados) pudessem oferecer métricas marginalmente superiores, a Árvore de Decisão entregou um desempenho satisfatório (RMSE de R\$ 2.260,57 e MAE de R\$ 1.577,21) mantendo a simplicidade estrutural necessária para auditoria e interpretação.
+
+A análise da importância das \textit{features}, realizada por meio do \textit{framework} SHAP, permitiu identificar os fatores de maior impacto nas decisões do modelo — como o tempo de atraso do voo e a falta de assistência da companhia aérea —, cumprindo o \textbf{Objetivo Específico (vi)}.
+
+Todo o fluxo de processamento de dados e experimentação foi parcialmente documentado (objetivo específico \textit{iv}), criando uma base sólida para os próximos passos do projeto.
+
+O modelo resultante, por ser funcional e explicável, está tecnicamente apto e foi integrado a uma plataforma web, o website do projeto Concil-IA, o que viabiliza o cumprimento do \textbf{Objetivo Específico (iii)} e disponibiliza a funcionalidade ao público.
+
+Isso valida a ferramenta não apenas como um artefato de software, mas como um instrumento alinhado à lógica jurídica do Juizado Especial Cível.
+
+\section{Limitações do Estudo Atual}
+
+Apesar da validação da viabilidade técnica, o projeto encontrou limitações que restringiram o desempenho máximo alcançável nesta fase:
+
+\begin{itemize}
+    \item \textbf{Recursos Computacionais:} A escassez de poder de processamento impediu uma varredura exaustiva de hiperparâmetros (\textit{Grid Search} mais amplo) e modelos, o que sugere que mesmo o modelo atual ainda possui margem para otimização e que modelos mais adequados à tarefa podem ser explorados.
+    \item \textbf{Volume de Dados:} A base de 1.174 sentenças, embora suficiente para provar o conceito, é considerada pequena para capturar a totalidade das nuances de casos atípicos (outliers). Isso restringe a capacidade de generalização do modelo em cenários menos frequentes e impede a aplicação de arquiteturas mais complexas e potencialmente mais precisas..
+\end{itemize}
