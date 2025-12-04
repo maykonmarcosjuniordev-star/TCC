@@ -118,7 +118,10 @@ Para mitigar o efeito de desbalanceamentos de classes, aplicou-se a técnica \te
 \end{figure}
 
 % [TODO 2: Corrigir o balanceamento no código e atualizar aqui]
-Reconhece-se que aplicar o balanceamento antes de separar os conjuntos de treino e teste é uma falha metodológica, uma vez que introduz vieses se o conjunto de teste incluir dados replicados, e será corrigida futuramente.
+Nesta fase exploratória, aplicou-se o balanceamento antes da divisão treino/teste.
+Reconhece-se que esta abordagem impõe limitações à generalização dos resultados preliminares (potencial data leakage),
+sendo a correção deste fluxo — com a aplicação do balanceamento estritamente sobre o conjunto de treino —
+uma das prioridades metodológicas já mapeadas para a próxima etapa da pesquisa (Capítulo \ref{sec:proximos_passos}).
 
 \subsection{Treinamento e Seleção do Modelo}
 

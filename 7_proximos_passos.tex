@@ -27,7 +27,7 @@ Por fim, o rigor na avaliação será intensificado para evitar vieses estatíst
 \subsection{Refinamento de Dados e Pré-processamento}
 A qualidade dos dados de entrada será refinada para lidar com a complexidade temporal e contextual dos processos:
 \begin{itemize}
-    \item \textbf{Correção Monetária:} Implementação de correção monetária dos valores de indenização para uma data base (e.g., 2025) utilizando índices oficiais como o IPCA, mitigando distorções causadas pela inflação em sentenças antigas.
+    \item \textbf{Correção Monetária:} Implementação de correção monetária dos valores de indenização para uma data base (e.g., 2025) utilizando índices oficiais como o IPCA, mitigando distorções causadas pela inflação e mudanças de jurisprudência.
     \item \textbf{Tratamento de Contextos Excepcionais:} Criação de \textit{features} específicas para sinalizar períodos anômalos (como a pandemia de COVID-19) ou perfis de julgamento específicos, visando isolar vieses temporais ou de varas judiciais.
     \item \textbf{Gestão de \textit{Outliers}:} Estudo aprofundado sobre a remoção ou segregação de \textit{outliers}. Planeja-se analisar os casos removidos separadamente e, potencialmente, criar modelos específicos para tratar esses casos extremos, evitando que distorçam o aprendizado do padrão geral.
     \item \textbf{Seleção de Atributos:} Aplicação de bibliotecas de \textit{Feature Selection} e \textit{Elimination} para reduzir a dimensionalidade e o ruído dos dados.

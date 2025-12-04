@@ -17,6 +17,10 @@ Os resultados consolidados estão apresentados na Tabela \ref{tab:metricas}.
 % [TODO 2: Obter os resultados para isso e outros modelos pertinentes]
 \input{tables/metricas}
 
+Ressalta-se que, devido à estratégia de balanceamento adotada nesta fase inicial (descrita na Seção 4.2),
+as métricas de erro apresentadas podem estar otimistas se comparadas a um cenário de teste totalmente isolado.
+Contudo, elas cumprem o papel de comparara capacidade de aprendizado dos diferentes algoritmos e a viabilidade da abordagem.
+
 A análise comparativa dos resultados indica um desempenho muito similar entre os modelos \textit{Decision Tree Regressor} e \textit{Random Forest Regressor}, com uma ligeira vantagem para o primeiro em ambas as métricas.
 
 O modelo \textit{AdaBoost Regressor}, por sua vez, foi descartado em uma fase inicial de testes, pois, embora apresentasse um desempenho de erro próximo ao dos outros modelos, seu consumo de memória era aproximadamente 300 vezes superior ao do \textit{Decision Tree}, tornando-o inviável dadas as restrições de recursos computacionais do projeto (\ref{sub:desempenho}).
@@ -56,9 +60,11 @@ Em segundo lugar, destaca-se o \textbf{Desamparo}, variável que indica se a com
 
 A alta frequência dessas variáveis na base de dados, conforme a Figura \ref{fig:value_distribution}, contribui para que o modelo aprenda com maior robustez sobre seus impactos.
 
-O gráfico de enxame (\textit{bee-swarm plot}) mostrado na Figura \ref{fig:global_bee_swarm} complementa essa análise, mostrando não apenas a importância, mas também a direção do impacto de cada fator.
-% [TODO 2: Pesquisar mais como interpretar o gráfico SHAP]
-% Nele, é possível visualizar que valores altos de "Intervalo de Atraso" e a presença de "Desamparo" (valores em vermelho) tendem a levar a predição para valores de indenização mais altos.
+O gráfico de enxame (\textit{bee-swarm plot}) mostrado na Figura \ref{fig:global_bee_swarm} complementa essa análise, mostrando não apenas a importância, mas também a direção do impacto de cada fator e a densidade de ocorrências.
+Cada ponto é uma sentença.
+A cor indica o valor da variável (Vermelho = Alto, Azul = Baixo).
+O eixo X indica o impacto no valor final (à direita implica em um aumento da indenização, e à esquerda em uma redução).
+Observa-se claramente que altos tempos de atraso (pontos vermelhos) se acumulam no lado direito, elevando a predição e valores baixos no lado esquerdo, reduzindo a precisão.
 
 \begin{figure}[h]
     \centering
