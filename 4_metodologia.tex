@@ -1,8 +1,11 @@
 \chapter{Metodologia}
 \label{ch:metodologia}
-O desenvolvimento deste trabalho seguiu uma abordagem quantitativa para o modelo e qualitativa para a explicabilidade; com a aplicação de técnicas de Ciência de Dados e Aprendizado de Máquina para a construção de um modelo preditivo de regressão e técnicas de Inteligência Artificial Explicável para permitir a explicação e interpretação de dados por usuários leigos.
+O desenvolvimento deste trabalho seguiu uma abordagem quantitativa para o modelo e qualitativa para a explicabilidade;
+com a aplicação de técnicas de Ciência de Dados e Aprendizado de Máquina
+para a construção de um modelo preditivo de regressão e técnicas de Inteligência Artificial Explicável
+para permitir a explicação e interpretação de dados por usuários leigos.
 
-O processo metodológico do Projeto Concil-IA foi estruturado em um \textit{pipeline} de múltiplas etapas:
+O processo metodológico do Projeto Concil-IA como um todo\ foi estruturado em um \textit{pipeline} de múltiplas etapas como observa-se na figura \ref{fig:concilia_pipeline}
 
 \begin{figure}[ht]
     \centering
@@ -12,6 +15,7 @@ O processo metodológico do Projeto Concil-IA foi estruturado em um \textit{pipe
     \label{fig:concilia_pipeline}
 \end{figure}
 
+No escopo específico deste trabalho, o foco recai sobre as etapas de processamento, modelagem e explicabilidade, conforme destacado no fluxo da Figura \ref{fig:project-pipeline}
 Já este trabalho contempla apenas as etapas:
 \begin{figure}[ht]
     \centering
@@ -21,33 +25,35 @@ Já este trabalho contempla apenas as etapas:
     \label{fig:project-pipeline}
 \end{figure}
 
-As seções a seguir detalham cada um dos passos deste trabalho.
-
-% [TODO: Fazer uma pequena introdução de cada etapa]
+As seções subsequentes detalham os recursos utilizados e as etapas percorridas, partindo da origem dos dados jurídicos (\ref{sec:base_dados}), passando pelas ferramentas computacionais empregadas, e culminando no fluxo de engenharia de atributos e treinamento dos modelos inteligentes
 
 \section{Base de Dados e Ferramentas Computacionais}
+\label{sec:base_dados}
+A fundamentação empírica deste estudo reside em um conjunto de sentenças judiciais reais e no ecossistema de bibliotecas da linguagem Python, escolhidos para garantir a reprodutibilidade e a robustez das análises.
+
+A seguir, detalha-se a composição do \textit{dataset} e o ambiente de desenvolvimento.
 
 \subsection{Base de Dados}
-\label{ch:dataset}
+\label{sub:dataset}
+A base de dados é composta por 1.174 sentenças proferidas pelo Juizado Especial Cível da UFSC, versando especificamente sobre falhas na prestação de serviços de transporte aéreo à luz do Código de Defesa do Consumidor.
 
-A base de dados corresponde a 1.174 sentenças provenientes do Juizado Especial Cível lotado na UFSC que versam sobre falhas no serviço de transporte aéreo (Direito do Consumidor).
-Essas sentenças foram coletadas manualmente por outros membros do projeto Concil-IA, na frente A.
-Após o processo de anonimização, os membros da equipe pertencentes à frente B extraíram variáveis (ou fatores) e as estruturaram com base nas descrições encontradas no Quadro \ref{tab:feature_desc}
+Os dados, anonimizados em conformidade com a Lei Geral de Proteção de Dados (LGPD), foram estruturados e extraídos para arquivos no formato CSV (\textit{comma-separated values}).
+Após a anonimização, que garantiu a supressão de identificadores sensíveis das partes, procedeu-se à extração das variáveis (ou \textit{features}) relevantes para a quantificação do dano.
+A tabela \ref{tab:feature_desc} apresenta as variáveis estruturadas utilizadas neste estudo.
 
 \input{tables/feature_description}
 
-Os dados, anonimizados em conformidade com a Lei Geral de Proteção de Dados (LGPD), foram estruturados e extraídos para arquivos no formato CSV (\textit{comma-separated values}).
-O processo de anonimização garantiu que informações sensíveis, como nomes das partes, fossem removidas, atendendo às exigências éticas para pesquisa científica.	
-O Quadro \ref{tab:features_distribution} mostra a distribuição de valores para cada feature encontrada na base de dados extraída.
-
-\input{tables/features_distribution}
-
-No projeto Concil-IA em si, há um processo de extração automatizada de dados (\citeonline{pereira2025using}), em quantidade descrita no Quadro \ref{tab:extraction_modes} que entretanto não pertine ao escopo deste trabalho, com o modelo de referência sendo o treinado exclusivamente com as sentenças extraídas manualmente.
+Ressalta-se que, embora o projeto Concil-IA possua iniciativas de extração automatizada de dados \cite{pereira2025using}, conforme descrito na tabela \ref{tab:extraction_modes}, este trabalho utiliza exclusivamente o conjunto de dados extraído e validado manualmente (\textit{Gold Standard}), visando minimizar ruídos decorrentes de erros de interpretação automática de texto nesta fase de validação do modelo.
 
 \input{tables/extraction_modes}
 
+A tabela \ref{tab:features_distribution} mostra a distribuição de valores para cada feature encontrada na base de dados manualmente extraída.
+
+\input{tables/features_distribution}
+
 \subsection{Ferramentas Computacionais}
-A implementação das etapas de pré-processamento, modelagem e explicabilidade foi realizada utilizando a linguagem de programação Python (3.13), com um conjunto de bibliotecas especializadas, conforme detalhado no Quadro \ref{tab:python_libs}
+
+A implementação do \textit{pipeline} de Ciência de Dados foi realizada na linguagem Python (versão 3.13), selecionada por sua ampla comunidade e suporte a bibliotecas de Aprendizado de Máquina. A tabela \ref{tab:python_libs} resume as principais bibliotecas empregadas.
 
 \input{tables/python_libs}
 
@@ -55,32 +61,53 @@ As versões, uso específico, detalhamento e bibliotecas adicionais encontram-se
 
 \section{Pipeline de Desenvolvimento do Modelo}
 
-\subsection{Pré-processamento e Engenharia de Atributos}
-Como detalhado na seção \ref{ch:dataset}, a base de dados pela qual o modelo se guiará foi extraída de sentenças jurídicas (anonimizadas) de processo a companhias aéreas para tabelas de dados estruturados.
+O desenvolvimento do modelo preditivo seguiu um fluxo iterativo composto por três grandes fases
+\begin{enumerate}
+    \item O pré-processamento dos dados brutos,
+    \item O treinamento e seleção de algoritmos,
+    \item A implementação da camada de explicabilidade.
+\end{enumerate}
 
-Os \textit{features} de intervalo, tanto para extravio de bagagem quanto atraso de vôo, foram também discretizadas conforme os Quadros \ref{tab:faixas-intervalo-de-extravio} e \ref{tab:faixas-intervalo-de-atraso}
+Cada uma destas fases envolveu decisões de projeto visando equilibrar a precisão estatística com a coerência jurídica.
+
+\subsection{Pré-processamento e Engenharia de Atributos}
+
+Como detalhado na seção \ref{sub:dataset}, a base de dados pela qual o modelo se guiará foi extraída de sentenças jurídicas (anonimizadas) de processo a companhias aéreas para tabelas de dados estruturados.
+
+Inicialmente, realizou-se a discretização das variáveis contínuas de tempo (atraso e extravio de bagagem), conforme os intervalos tipicamente utilizados na jurisprudência, apresentados nas tabelas \ref{tab:faixas-intervalo-de-extravio} e \ref{tab:faixas-intervalo-de-atraso}.
 
 \input{tables/faixas-intervalo-de-extravio}
 \input{tables/faixas-intervalo-de-atraso}
 
-Inicialmente, realizou-se uma simples simplificação dos dados estruturados.
-\textit{Features} categóricos foram convertidos em numéricos mediante substituição binária --- "Sim" ou "S" é substituído por '1', 'Não' ou "N" por '0', valores não identificados por '0' também ---, ao passo que atributos contínuos, como os intervalos temporais mencionados acima, foram discretizados em faixas baseadas na distribuição observada, usando o método dos quartis (\cite{pinheiro2009estatistica}).
+\paragraph{Tratamento de Variáveis e Filtros Lógicos}
+Realizou-se a conversão de variáveis categóricas para formatos numéricos categóricos e a remoção estratégica de colunas.
+
+\textit{Features} categóricos foram convertidos em numéricos mediante substituição binária 
+--- "Sim" ou "S" é substituído por '1', 'Não' ou "N" por '0', valores não identificados por '0' também ---,
+ao passo que atributos contínuos, como os intervalos temporais mencionados acima, foram discretizados em faixas baseadas na distribuição observada, usando o método dos quartis (\cite{pinheiro2009estatistica}).
+
+Optou-se pela exclusão de casos improcedentes e de variáveis que atuam como "fatores de anulação" do dano moral.
+Essa decisão justifica-se pois tais fatores são determinísticos: sua presença implica, juridicamente, a inexistência de dever de indenizar.
+
+Portanto, os \textit{features} "culpa exclusiva do consumidor" e "condições climáticas/fechamento do aeroporto" são verificadas na interface do \textit{website} e não no modelo. --- Ou seja, antes do usuário poder inserir os fatores específicos do seu caso, ele é questionado sobre as condições climáticas do momento de seu vôo e se os problemas não decorrem de suas ações.
+Caso responda sim, é informado diretamente que a indenização por dano moral provavelmente será nula e desencorajado de usar o modelo.
 
 % [TODO 2: Feature Selection virá aqui]
-\cite{kuhn2013applied}
-
-Depois, colunas com \textit{confactors} (que anulam o dano moral) foram também removidas, junto aos casos improcedentes.
---- Essa decisão foi tomada por observar-se que valores nulos prejudicam a acurácia e confundem o modelo ---
-Portanto, os \textit{features} "culpa exclusiva do consumidor" e "condições climáticas/fechamento do aeroporto" são verificadas na interface do \textit{website} e não no modelo. --- Ou seja, antes do usuário poder inserir os fatores específicos do seu caso, ele é questionado sobre as condições climáticas do momento de seu vôo e se os problemas não decorrem de suas ações. Caso responda sim, é informado diretamente que a indenização por dano moral provavelmente será nula e desencorajado de usar o modelo.
-
-O \textit{feature} "assistência da companhia aérea" (se a companhia aérea prestou ajuda efetiva para mitigar transtornos ao consumidor), que também seria um \textit{factor} negativo para o valor de indenização (embora não o anule) originalmente, e por isso teve sua interpretação e valores invertidos. Ele tornou-se o \textit{feature} "desamparo", presente apenas quando a companhia aérea falha em prestar auxílio efetivo ao consumidor. Dessa forma, todos os \textit{features} selecionados contribuem para o aumento do valor estimado.
+% \cite{kuhn2013applied}
+Adicionalmente, aplicou-se uma inversão lógica no atributo "assistência da companhia aérea". Originalmente um fator atenuante, ele foi transformado na variável "desamparo", que é contabilizada apenas quando a empresa falha em prestar auxílio.
+Com isso, buscou-se uma monotonicidade positiva, onde a presença de qualquer \textit{feature} no vetor de entrada contribui positivamente para o aumento do valor predito.
 
 Os \textit{features} "extravio temporário de bagagem" (binário) e "intervalo de extravio de bagagem" foram combinados (se não houve extravio de bagagem, o intervalo é 0). Da mesma forma, "atraso" e "intervalo de atraso" foram combinados, e depois o \textit{feature} "cancelamento/alteração de destino" também foi combinada em "intervalo de atraso", tornando-se a faixa '-1', para representar infinito (pois o consumidor nunca chegou ao destino contratado).
 
-Após isso, os atributos redundantes, como os \textit{features} binários "extravio temporário de bagagem" e "atraso" foram removidos, bem como "cancelamento/alteração de destino". Isso deve-se a sua informação já ser contida em "intervalo de extravio de bagagem" e "intervalo de atraso", e contribui para simplificar o modelo final.
+Variáveis redundantes ou correlatas foram fundidas ou removidas para reduzir a dimensionalidade.
+Os \textit{features} binários "extravio temporário de bagagem" e "atraso" foram removidos, uma vez que sua informação já é contida nas variáveis de intervalo.
 
-Por fim, Outliers (\cite{hawkins1980identification}) foram identificados pelo método dos quantis \cite{wilcox2012introduction} e tratados com remoção seletiva.
-Para mitigar desbalanceamentos, aplicou-se a técnica \textit{RandomOverSampler} (da biblioteca \textit{Python} \textit{imblearn}), com a estratégia "\textit{not-majority}" para uniformizar as categorias-alvo (14, decididas baseado na distribuição de valores alvo \ref{fig:value_distribution}).
+Já o \textit{Feature} "cancelamento de voo" foi incorporado à variável de tempo como um valor de atraso infinito (faixa '-1'), simplificando a interpretação do modelo.
+
+\paragraph{Tratamento de Outliers e Balanceamento}
+Valores discrepantes (\textit{outliers} \cite{hawkins1980identification}) foram identificados pelo método dos quantis \cite{wilcox2012introduction} e tratados com remoção seletiva.
+
+Para mitigar o efeito de desbalanceamentos de classes, aplicou-se a técnica \textit{RandomOverSampler} (da biblioteca \textit{Python} \textit{imblearn}), com a estratégia "\textit{not-majority}" para uniformizar as categorias-alvo (14, decididas baseado na distribuição de valores alvo vistas na Figura \ref{fig:value_distribution}).
 
 \begin{figure}[h]
     \centering
@@ -90,21 +117,38 @@ Para mitigar desbalanceamentos, aplicou-se a técnica \textit{RandomOverSampler}
     \fonte{Elaborado pelo Autor}
 \end{figure}
 
+% [TODO 2: Corrigir o balanceamento no código e atualizar aqui]
+Reconhece-se que aplicar o balanceamento antes de separar os conjuntos de treino e teste é uma falha metodológica, uma vez que introduz vieses se o conjunto de teste incluir dados replicados, e será corrigida futuramente.
+
 \subsection{Treinamento e Seleção do Modelo}
+
 O conjunto de dados foi dividido em 80\% para treinamento e 20\% para teste, utilizando uma estratégia de amostragem estratificada para garantir que a distribuição das classes de valor fosse preservada em ambas as amostras. 
 
 % [TODO 2: Depois de mudar a metodologia para incluir um conjunto de validação, citar o Machine Yearning]
-Foram treinados e avaliados três algoritmos de regressão da biblioteca \textit{scikit-learn}: \textit{DecisionTreeRegressor} (\cite{blockeel2023decision}), \textit{RandomForestRegressor} (\cite{zhang2023compare}) e \textit{AdaBoostRegressor} (\cite{airlangga2024anomaly})
+Nesta primeira etapa, foram treinados e avaliados três algoritmos de regressão da biblioteca \textit{scikit-learn}:
+\textit{DecisionTreeRegressor} (\cite{blockeel2023decision}), 
+\textit{RandomForestRegressor} (\cite{zhang2023compare}) 
+e \textit{AdaBoostRegressor} (\cite{airlangga2024anomaly})
 
 A otimização dos hiperparâmetros de cada modelo foi realizada por meio de uma abordagem heurística, com a variação de um hiperparâmetro por vez, devido às limitações de recursos computacionais disponíveis.
 
 \subsection{Avaliação de Desempenho}
 \label{sub:desempenho}
-O desempenho dos modelos foi avaliado quantitativamente por meio de duas métricas principais: o Erro Quadrático Médio Raiz (RMSE), escolhido por sua capacidade de penalizar erros maiores de forma mais significativa, e o Erro Absoluto Médio (MAE), utilizado para fornecer uma estimativa da margem de erro média em termos práticos, (\cite{zhang2023compare}).
-Além do desempenho preditivo, a seleção do modelo final considerou fatores secundários, como o custo computacional (memória e tempo de processamento) e a interpretabilidade inerente de cada algoritmo, sendo este último um critério fundamental para os objetivos do projeto.
+A validação do modelo não se restringiu à precisão numérica, incorporando também critérios de transparência algorítmica e performance computacional
+
+Utilizou-se o Erro Quadrático Médio Raiz (RMSE) para penalizar grandes desvios
+e o Erro Absoluto Médio (MAE) para mensurar a margem de erro média em valores monetários reais \cite{zhang2023compare}.
+
+Além do desempenho preditivo, a seleção do modelo final considerou fatores secundários,
+como o custo computacional (memória e tempo de processamento
+e a interpretabilidade inerente de cada algoritmo,
+sendo este último um critério fundamental para os objetivos do projeto.
+
 Nesse contexto, com os 3 modelos possuindo desempenho similar, os fatores secundários foram determinantes na escolha final.
 
 \subsection{Implementação da Explicabilidade (XAI)}
-Para garantir a transparência das predições, foi implementado o \textit{framework} SHAP (\textit{SHapley Additive exPlanations} (\cite{lundberg2017unified})). Utilizando o método \textit{Explainer}, foram calculados os valores de Shapley para cada atributo de cada predição, quantificando a contribuição individual de cada fator para o resultado final.
+Para garantir a transparência das predições, foi implementado o \textit{framework} SHAP (\textit{SHapley Additive exPlanations} (\cite{lundberg2017unified})).
 
-Esses valores foram então utilizados para gerar visualizações, como gráficos de cascata (\textit{waterfall plots}) para explicações locais e gráficos de barras para a importância global dos atributos, traduzindo os resultados do modelo em justificativas compreensíveis para o usuário final.
+Utilizando o método \textit{Explainer}, o sistema calcula a contribuição marginal de cada fato jurídico (ex: tempo de atraso, extravio) para o valor final da indenização, gerando visualizações como o \textit{waterfall plot}.
+
+Isso permite que o usuário compreenda não apenas "quanto" receberá, mas "por que" aquele valor foi sugerido.
